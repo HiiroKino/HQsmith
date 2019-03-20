@@ -4,42 +4,56 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public GameObject target; // an object to follow
+    public Vector3 offset; // offset form the target object
+
     [SerializeField]
-    GameObject targetObj;
-    Vector3 targetPos;
+    private float distance = 4.0f; 
+    [SerializeField]
+    private float polarAngle = 45.0f; 
+    [SerializeField]
+    private float azimuthalAngle = 45.0f; 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        targetPos = targetObj.transform.position;
-    }
+    [SerializeField]
+    private float minDistance = 1.0f;
+    [SerializeField]
+    private float maxDistance = 7.0f;
+    [SerializeField]
+    private float minPolarAngle = 5.0f;
+    [SerializeField]
+    private float maxPolarAngle = 75.0f;
+    [SerializeField]
+    private float CameraXSpeed = 5.0f;
+    [SerializeField]
+    private float CameraYSpeed = 5.0f;
+    [SerializeField]
+    private float scrollSensitivity = 5.0f;
 
-    // Update is called once per frame
     void Update()
-    {
-        MoveCamera();
+    {      
+        updateAngle(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical"));
         
-        RotateCamera();
+        var lookAtPos = target.transform.position + offset;
+        updatePosition(lookAtPos);
+        transform.LookAt(lookAtPos);
     }
 
-    private void MoveCamera()
+    void updateAngle(float x, float y)
     {
-        // targetの移動量分カメラが移動す
-        transform.position += targetObj.transform.position - targetPos;
-        targetPos = targetObj.transform.position;
+        x = azimuthalAngle - x * CameraXSpeed;
+        azimuthalAngle = Mathf.Repeat(x, 360);
 
+        y = polarAngle + y * CameraYSpeed;
+        polarAngle = Mathf.Clamp(y, minPolarAngle, maxPolarAngle);
     }
 
-    private void RotateCamera()
+    void updatePosition(Vector3 lookAtPos)
     {
-        // マウスの移動量
-        float CameraRotateX = Input.GetAxis("RightHorizontal");
-        float CameraRotateY = Input.GetAxis("RightVertical");
-
-        // targetの位置のY軸を中心に、回転する
-        transform.RotateAround(targetPos, Vector3.up, CameraRotateX * Time.deltaTime * 200f);
-
-        // カメラの垂直移動        
-        transform.RotateAround(targetPos, transform.right, CameraRotateY * Time.deltaTime * 200f);
+        var da = azimuthalAngle * Mathf.Deg2Rad;
+        var dp = polarAngle * Mathf.Deg2Rad;
+        transform.position = new Vector3(
+            lookAtPos.x + distance * Mathf.Sin(dp) * Mathf.Cos(da),
+            lookAtPos.y + distance * Mathf.Cos(dp),
+            lookAtPos.z + distance * Mathf.Sin(dp) * Mathf.Sin(da));
     }
 }

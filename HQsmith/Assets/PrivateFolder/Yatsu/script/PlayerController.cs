@@ -8,17 +8,16 @@ public class PlayerController : MonoBehaviour
     float m_horizontal;
     float m_vertical;
 
-    Rigidbody m_rigidbody;
-
     //ガード用のフラグ
     bool m_guardFlag;
     
     float MoveSpeed = 3f;
+    float StepIntervalTimer = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_rigidbody = GetComponent<Rigidbody>();
+        
     }
 
     // Update is called once per frame
@@ -26,21 +25,28 @@ public class PlayerController : MonoBehaviour
     {
         //移動処理用関数
         MovePlayer();
+        
+        //ステップインターバルタイマー
+        if(StepIntervalTimer > 0)
+        {
+            StepIntervalTimer -= Time.deltaTime; 
+        }
     }
 
     //移動処理
     public void MovePlayer()
     {
+        // カメラの方向から、X-Z平面の単位ベクトルを取得
+        Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
+
+        // 方向キーの入力値とカメラの向きから、移動方向を決定
+        Vector3 moveForward = cameraForward * m_vertical + Camera.main.transform.right * m_horizontal;
+        
         if (m_guardFlag == false)
         {
-            // カメラの方向から、X-Z平面の単位ベクトルを取得
-            Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-
-            // 方向キーの入力値とカメラの向きから、移動方向を決定
-            Vector3 moveForward = cameraForward * m_vertical + Camera.main.transform.right * m_horizontal;
-
+            //通常移動処理
             // 移動方向に進ませる
-            m_rigidbody.velocity = moveForward * MoveSpeed + new Vector3(0, m_rigidbody.velocity.y, 0);
+            transform.position += moveForward * MoveSpeed * Time.deltaTime;
 
             // キャラクターの向きを進行方向に
             if (moveForward != Vector3.zero)
@@ -48,11 +54,20 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(moveForward);
             }
         }
-        else
+        else if(StepIntervalTimer <= 0 && m_guardFlag )
         {
-            Debug.Log("ガード中ですよー");
+            //ステップ処理
+            if (Mathf.Abs(moveForward.x) >= 0.5 || Mathf.Abs(moveForward.z) >= 0.5)
+            {
+                Debug.Log("ステップ");
+                //ステップのインターバル
+                StepIntervalTimer = 0.7f;
+                //移動方向にステップ
+                transform.position += moveForward * 30f * Time.deltaTime;
+            }
         }
     }
+
     //ガード処理
     public void GuardFlag(bool value)
     {

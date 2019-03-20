@@ -367,7 +367,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c166c9b6429c24cafa486c84d5a020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObj: {fileID: 1202968310}
+  target: {fileID: 1202968310}
+  offset: {x: 0, y: 2, z: 0}
+  distance: 8
+  polarAngle: 45
+  azimuthalAngle: 45
+  minDistance: 1
+  maxDistance: 7
+  minPolarAngle: 5
+  maxPolarAngle: 75
+  mouseXSensitivity: 5
+  mouseYSensitivity: 5
+  scrollSensitivity: 5
 --- !u!1 &1202968310
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +491,9 @@ MonoBehaviour:
   JoystickLeftVertical: LeftVertical
   m_attack1Key: 351
   m_attack2Key: 352
-  m_guardKey: GuardKey
+  m_provokeKey: 350
+  m_GuardKey: 355
+  m_DashKey: DashKey
 --- !u!114 &1202968316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -507,7 +520,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!1 &1242574248
 GameObject:

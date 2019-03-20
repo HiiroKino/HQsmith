@@ -21,6 +21,7 @@ public class UserController : MonoBehaviour
 
     public KeyCode m_attack1Key = KeyCode.Joystick1Button1;    //弱攻撃ボタン
     public KeyCode m_attack2Key = KeyCode.Joystick1Button2;    //強攻撃ボタン
+    public KeyCode m_provokeKey = KeyCode.Joystick1Button0;
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
 
     public string m_DashKey = "DashKey";
@@ -33,7 +34,8 @@ public class UserController : MonoBehaviour
         Attack2,
         Attack3,
         StrongAttack,
-        KnockBackAttack
+        KnockBackAttack,
+        provoke
     }
     AttackType m_attackType = AttackType.Attack1;
 
@@ -55,15 +57,28 @@ public class UserController : MonoBehaviour
         //ダッシュ処理
         DashFlag();
 
-        //攻撃処理
+        //弱攻撃ボタン処理
         if (Input.GetKeyDown(m_attack1Key))
         { 
             Attack();
         }
-
+        //強攻撃ノックバック攻撃ボタン処理
         if (Input.GetKeyDown(m_attack2Key))
         {
-            m_attackType = AttackType.StrongAttack;
+            if (m_guardflag == false)
+            {
+                m_attackType = AttackType.StrongAttack;
+            }
+            else
+            {
+                m_attackType = AttackType.KnockBackAttack;
+            }
+            Attack();
+        }
+        //挑発ぼたん処理
+        if (Input.GetKeyDown(m_provokeKey))
+        {
+            m_attackType = AttackType.provoke;
             Attack();
         }
 
@@ -89,7 +104,7 @@ public class UserController : MonoBehaviour
         m_playerController.Vertical = Vertical;
     }
 
-    //弱攻撃処理のための関数
+    //攻撃処理のための関数
     public void Attack()
     {
         if (m_guardflag == false) {
@@ -115,6 +130,16 @@ public class UserController : MonoBehaviour
                 m_attackType = AttackType.Attack1;
                 m_playerController.PlayAnimation("StrongAttack");
             }
+            else if (m_attackType == AttackType.provoke)
+            {
+                m_attackType = AttackType.Attack1;
+                m_playerController.PlayAnimation("Provoke");
+            }
+        }
+        if (m_attackType == AttackType.KnockBackAttack)
+        {
+            m_attackType = AttackType.Attack1;
+            m_playerController.PlayAnimation("KnockbackAttack");
         }
     }   
 
@@ -123,6 +148,7 @@ public class UserController : MonoBehaviour
     {
         if (Input.GetKey(m_GuardKey))
         {
+            //Debug.Log("ガード中ですよー");
             m_guardflag = true;
             m_playerController.GuardFlag(m_guardflag);
         }
