@@ -6,6 +6,7 @@ public class UserController : MonoBehaviour
 {
     [SerializeField]
     PlayerController m_playerController;
+    SimpleAnimation m_simpleAnimation;
 
     public string JoystickLeftHorizontal = "LeftHorizontal";
     public string JoystickLeftVertical = "LeftVertical";
@@ -25,7 +26,14 @@ public class UserController : MonoBehaviour
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
 
     public string m_DashKey = "DashKey";
-    
+
+    //自身の状態管理用enum
+    public enum StateType
+    {
+        Idle,
+        Move,
+        Attack,
+    }
 
     //攻撃の種類のenum
     public enum AttackType
@@ -42,12 +50,15 @@ public class UserController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_simpleAnimation = GetComponent<SimpleAnimation>();
+        m_simpleAnimation.CrossFade("Default", 0.2f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        m_simpleAnimation.CrossFade("Default", 0.2f);
+
         //移動処理
         MovePlayer();
 
@@ -59,7 +70,7 @@ public class UserController : MonoBehaviour
 
         //弱攻撃ボタン処理
         if (Input.GetKeyDown(m_attack1Key))
-        { 
+        {
             Attack();
         }
         //強攻撃ノックバック攻撃ボタン処理
@@ -102,6 +113,7 @@ public class UserController : MonoBehaviour
         m_playerController.Horizontal = Horizontal;
         Vertical = Input.GetAxis(JoystickLeftVertical);
         m_playerController.Vertical = Vertical;
+        m_simpleAnimation.CrossFade("Run", 0.2f);
     }
 
     //攻撃処理のための関数
@@ -112,22 +124,26 @@ public class UserController : MonoBehaviour
             {
                 m_attackType = AttackType.Attack2;
                 m_attackTimer = 1f;
+                m_simpleAnimation.CrossFade("Attack", 0.2f);
                 m_playerController.PlayAnimation("Attack1");
             }
             else if (m_attackType == AttackType.Attack2)
             {
                 m_attackType = AttackType.Attack3;
                 m_attackTimer = 1f;
+                m_simpleAnimation.CrossFade("Attack", 0.2f);
                 m_playerController.PlayAnimation("Attack2");
             }
             else if (m_attackType == AttackType.Attack3)
             {
                 m_attackType = AttackType.Attack1;
+                m_simpleAnimation.CrossFade("Attack", 0.2f);
                 m_playerController.PlayAnimation("Attack3");
             }
             else if (m_attackType == AttackType.StrongAttack)
             {
                 m_attackType = AttackType.Attack1;
+                m_simpleAnimation.CrossFade("Attack", 0.2f);
                 m_playerController.PlayAnimation("StrongAttack");
             }
             else if (m_attackType == AttackType.provoke)
@@ -139,6 +155,7 @@ public class UserController : MonoBehaviour
         if (m_attackType == AttackType.KnockBackAttack)
         {
             m_attackType = AttackType.Attack1;
+            m_simpleAnimation.CrossFade("Attack", 0.2f);
             m_playerController.PlayAnimation("KnockbackAttack");
         }
     }   
