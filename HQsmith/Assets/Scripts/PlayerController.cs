@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
         // 方向キーの入力値とカメラの向きから、移動方向を決定
         Vector3 moveForward = cameraForward * m_vertical + Camera.main.transform.right * m_horizontal;
-        Debug.Log(cameraForward + " " + moveForward);
+        //Debug.Log(cameraForward + " " + moveForward);
 
         if (m_guardFlag == false)
         {

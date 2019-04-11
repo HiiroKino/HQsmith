@@ -148,7 +148,7 @@ public class UserController : MonoBehaviour
     {
         if (Input.GetKey(m_GuardKey))
         {
-            //Debug.Log("ガード中ですよー");
+            Debug.Log("ガード中ですよー");
             m_guardflag = true;
             m_playerController.GuardFlag(m_guardflag);
         }

@@ -64,6 +64,11 @@
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\UserController.cs" />
+    <Compile Include="Assets\SimpleAnimationComponent\CustomPlayableExtensions.cs" />
+    <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimation.cs" />
+    <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimation_impl.cs" />
+    <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimationPlayable.cs" />
+    <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimationPlayable_States.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Owner/Desktop/GameTaisyou/HQsmith/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
