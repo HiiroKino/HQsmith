@@ -9,6 +9,8 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     GameObject m_target;
+    [SerializeField]
+    float m_lockOnYPosition;
 
     public KeyCode m_lockOnKey = KeyCode.Joystick1Button4;
 
@@ -35,17 +37,17 @@ public class CameraController : MonoBehaviour
     private float scrollSensitivity = 5.0f;
 
     void LateUpdate()
-    {
-        
-        updateAngle(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical"));
+    {   
         var lookAtPos = target.transform.position + offset;
-        updatePosition(lookAtPos);
+        
         if (Input.GetKey(m_lockOnKey))
         {
-            transform.LookAt(m_target.transform.position);
+            lockOnCameraPosition();          
         }
         else
         {
+            updatePosition(lookAtPos);
+            updateAngle(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical"));
             transform.LookAt(lookAtPos);
         }
     }
@@ -68,4 +70,15 @@ public class CameraController : MonoBehaviour
             lookAtPos.y + distance * Mathf.Cos(dp),
             lookAtPos.z + distance * Mathf.Sin(dp) * Mathf.Sin(da));
     }
+
+    void lockOnCameraPosition()
+    {
+
+        transform.position = new Vector3(
+            target.transform.position.x + (target.transform.position.x - m_target.transform.position.x),
+            m_lockOnYPosition,
+            target.transform.position.z + (target.transform.position.z - m_target.transform.position.z));
+        
+        transform.LookAt(m_target.transform.position);
+    } 
 }

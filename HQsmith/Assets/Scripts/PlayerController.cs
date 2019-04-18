@@ -14,6 +14,19 @@ public class PlayerController : MonoBehaviour
     float MoveSpeed = 3f;
     float StepIntervalTimer = 0f;
 
+    //AAGage用の変数
+
+    float m_aaGage;
+    float m_maxAaGage = 200;
+
+    public enum AAGageState
+    {
+        None,
+        one,
+        two
+    }
+    public AAGageState m_aaGageState = AAGageState.None;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +43,16 @@ public class PlayerController : MonoBehaviour
         if(StepIntervalTimer > 0)
         {
             StepIntervalTimer -= Time.deltaTime; 
+        }
+
+        //アルティメットアタック用
+        if(m_aaGage >= 200)
+        {
+            m_aaGageState = AAGageState.two;
+        }
+        else if(m_aaGage >= 100)
+        {
+            m_aaGageState = AAGageState.one;
         }
     }
 
@@ -52,7 +75,6 @@ public class PlayerController : MonoBehaviour
             // キャラクターの向きを進行方向に
             if (moveForward != Vector3.zero)
             {
-                //                transform.rotation = Quaternion.LookRotation(moveForward);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveForward), 0.3f);
             }
         }
@@ -92,6 +114,13 @@ public class PlayerController : MonoBehaviour
     public void PlayAnimation(string str)
     {
         Debug.Log(str);
+    }
+
+    public void AaAttack(string str)
+    {
+        Debug.Log(str);
+        m_aaGage = 0;
+        m_aaGageState = AAGageState.None;
     }
 
     public float Horizontal

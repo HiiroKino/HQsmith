@@ -16,6 +16,9 @@ public class UserController : MonoBehaviour
     float Horizontal;
     float Vertical;
 
+    //必殺技用のゲージ
+    float m_aaGage;
+
     //弱攻撃用のタイマー
     float m_attackTimer;
 
@@ -23,6 +26,7 @@ public class UserController : MonoBehaviour
     public KeyCode m_attack2Key = KeyCode.Joystick1Button2;    //強攻撃ボタン
     public KeyCode m_provokeKey = KeyCode.Joystick1Button0;
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
+    public KeyCode m_AaAttackKey = KeyCode.A;
 
     public string m_DashKey = "DashKey";
     
@@ -42,7 +46,7 @@ public class UserController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_aaGage = 0;
     }
 
     // Update is called once per frame
@@ -92,6 +96,11 @@ public class UserController : MonoBehaviour
             m_attackType = AttackType.Attack1;
         }
 
+        //AAアタックのボタン処理
+        if(Input.GetKeyDown(m_AaAttackKey) && m_playerController.m_aaGageState == PlayerController.AAGageState.None)
+        {
+            AaAttack();
+        }
     }
 
     //移動処理のための関数
@@ -143,6 +152,18 @@ public class UserController : MonoBehaviour
         }
     }   
 
+    public void AaAttack()
+    {
+        if (m_playerController.m_aaGageState == PlayerController.AAGageState.one)
+        {
+            m_playerController.AaAttack("one");
+        }
+        else if (m_playerController.m_aaGageState == PlayerController.AAGageState.two)
+        {
+            m_playerController.AaAttack("one");
+        }
+    }
+
     //ガード処理
     public void GuardFlag()
     {
@@ -171,4 +192,6 @@ public class UserController : MonoBehaviour
             m_playerController.DashFlag(false);
         }
     }
+
+    
 }

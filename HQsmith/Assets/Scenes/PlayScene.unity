@@ -461,7 +461,9 @@ MonoBehaviour:
   target: {fileID: 1202968310}
   offset: {x: 0, y: 2, z: 0}
   m_target: {fileID: 247312439}
-  m_lockOnKey: 354
+  m_lockOnYPosition: 4
+  m_cameraMagnification: 3
+  m_lockOnKey: 334
   distance: 8
   polarAngle: 45
   azimuthalAngle: 45
