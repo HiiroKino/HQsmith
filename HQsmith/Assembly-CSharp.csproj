@@ -62,7 +62,12 @@
   <ItemGroup>
     <Compile Include="Assets\Controller Tester\Scripts\DetectUnknownControllerMappings.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\CursorController.cs" />
+    <Compile Include="Assets\Scripts\FadeCommand.cs" />
+    <Compile Include="Assets\Scripts\Fadein.cs" />
+    <Compile Include="Assets\Scripts\OutputMenus.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\TitleController.cs" />
     <Compile Include="Assets\Scripts\UserController.cs" />
     <Compile Include="Assets\SimpleAnimationComponent\CustomPlayableExtensions.cs" />
     <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimation.cs" />
