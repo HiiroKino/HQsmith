@@ -8,16 +8,47 @@ public class PlayerController : MonoBehaviour
     float m_horizontal;
     float m_vertical;
 
+    //敵のプレイヤーコントローラー
+    [SerializeField]
+    PlayerController m_enemyPlayerController;
+    //敵のユーザーコントローラー
+    [SerializeField]
+    UserController m_enemyUsetController;
+
     //ガード用のフラグ
     bool m_guardFlag;
     
     float MoveSpeed = 3f;
     float StepIntervalTimer = 0f;
 
-    //AAGage用の変数
-
+    //AAゲージ用の変数
     float m_aaGage;
     float m_maxAaGage = 200;
+
+    //ガードゲージ用の変数
+    float m_guardGage;
+    float m_maxGuardGage = 100;
+
+    //カチボシ用のゲージ
+    float katibosigage;
+    float katibosiCount;
+
+    //攻撃のダメージ用の変数
+    [SerializeField]
+    float zyakuDamage = 4f;
+    [SerializeField]
+    float kyouDamage = 7f;
+
+    //攻撃時のカチボシゲージを増やすための変数
+    [SerializeField]
+    float zyakuAttack = 4f;
+    [SerializeField]
+    float kyouAttack = 7f;
+
+    //コンボ用のカウント
+    float ComboCount;
+
+    public bool _isRendered = true;
 
     public enum AAGageState
     {
@@ -30,7 +61,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        ComboCount = 0;
+        katibosigage = 0;
+        katibosiCount = 0;
+        StartCoroutine("AaGage");
     }
 
     // Update is called once per frame
@@ -64,7 +98,6 @@ public class PlayerController : MonoBehaviour
 
         // 方向キーの入力値とカメラの向きから、移動方向を決定
         Vector3 moveForward = cameraForward * m_vertical + Camera.main.transform.right * m_horizontal;
-        //Debug.Log(cameraForward + " " + moveForward);
 
         if (m_guardFlag == false)
         {
@@ -136,6 +169,95 @@ public class PlayerController : MonoBehaviour
         set
         {
             m_vertical = value;
+        }
+    }
+
+    //カメラにプレイヤーが写っているのかを判定するメソッド
+    private void OnWillRenderObject()
+    {
+        if (Camera.current.tag == "PlayerCamera")
+        {
+            _isRendered = true;
+        }
+        else
+        {
+            _isRendered = false;
+        }
+    }
+
+    //AAゲージの自動増加処理
+    IEnumerator AaGage()
+    {
+        m_aaGage += 1;
+        yield return new WaitForSeconds(1f);
+    }
+
+    //ガードゲージの自動増加処理
+    IEnumerator GuardGage()
+    {
+        m_guardGage += 1;
+        if(m_guardGage > m_maxGuardGage)
+        {
+            m_guardGage = m_maxGuardGage;
+        }
+        yield return new WaitForSeconds(1f);
+    }
+
+    //評価ゲージのダメージ、増加処理
+    public void KatibosiGage(float damege)
+    {
+        damege *= (1 + ComboCount / 10);
+        katibosigage += damege;
+        if(katibosigage > 100)
+        {
+            katibosiCount++;
+            katibosigage = 0;
+        }
+        if (katibosigage < 0)
+        {
+            katibosiCount--;
+            katibosigage = 100 - katibosigage;
+        }
+    }
+
+    //ガードゲージの減少処理
+    public void GuardGage(float damege)
+    {
+        m_guardGage -= damege;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "sword")
+        {
+            switch (m_enemyUsetController.m_attackType)
+            {
+                case UserController.AttackType.Attack1:
+                    ComboCount++;
+                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                    KatibosiGage(zyakuDamage);
+                    break;
+                case UserController.AttackType.Attack2:
+                    ComboCount++;
+                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                    KatibosiGage(zyakuDamage);
+                    break;
+                case UserController.AttackType.Attack3:
+                    ComboCount++;
+                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                    KatibosiGage(zyakuDamage);
+                    break;
+                case UserController.AttackType.StrongAttack:
+                    ComboCount++;
+                    m_enemyPlayerController.KatibosiGage(kyouAttack);
+                    KatibosiGage(kyouDamage);
+                    break;
+                case UserController.AttackType.KnockBackAttack:
+                    ComboCount++;
+                    m_enemyPlayerController.KatibosiGage(kyouAttack);
+                    KatibosiGage(kyouDamage);
+                    break;
+            }
         }
     }
 }

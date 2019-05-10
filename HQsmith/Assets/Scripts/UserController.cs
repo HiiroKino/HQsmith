@@ -28,8 +28,7 @@ public class UserController : MonoBehaviour
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
     public KeyCode m_AaAttackKey = KeyCode.A;
 
-    public string m_DashKey = "DashKey";
-    
+    public string m_DashKey = "DashKey";   
 
     //攻撃の種類のenum
     public enum AttackType
@@ -41,7 +40,7 @@ public class UserController : MonoBehaviour
         KnockBackAttack,
         provoke
     }
-    AttackType m_attackType = AttackType.Attack1;
+    public AttackType m_attackType = AttackType.Attack1;
 
     // Start is called before the first frame update
     void Start()
@@ -160,7 +159,7 @@ public class UserController : MonoBehaviour
         }
         else if (m_playerController.m_aaGageState == PlayerController.AAGageState.two)
         {
-            m_playerController.AaAttack("one");
+            m_playerController.AaAttack("two");
         }
     }
 

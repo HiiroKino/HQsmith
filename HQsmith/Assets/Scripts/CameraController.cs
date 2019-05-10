@@ -1,18 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class CameraController : MonoBehaviour
 {
     public GameObject target; // an object to follow
     public Vector3 offset; // offset form the target object
 
+    LockOnController m_lockOnController;
     [SerializeField]
-    GameObject m_target;
+    PlayerController m_playerController;
+    
     [SerializeField]
     float m_lockOnYPosition;
+    [SerializeField]
+    float cameraDistance;
 
     public KeyCode m_lockOnKey = KeyCode.Joystick1Button4;
+    public string m_lockOnSelectKey = "LockOnSelectKey";
+
+    bool lockOn;
 
     [SerializeField]
     private float distance = 4.0f; 
@@ -36,22 +44,55 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float scrollSensitivity = 5.0f;
 
+    private void Start()
+    {
+        //カメラの中のロックオンコントローラーを取ってくる
+        m_lockOnController = GetComponent<LockOnController>();
+        lockOn = true;
+    }
+
     void LateUpdate()
     {   
         var lookAtPos = target.transform.position + offset;
         
+        //カメラのロックオンボタンの処理
         if (Input.GetKey(m_lockOnKey))
         {
-            lockOnCameraPosition();          
+            //ロックオンコントローラーの中のロックオン処理を呼ぶ
+            if (Input.GetAxis(m_lockOnSelectKey) > 0.5 && lockOn == true)
+            {
+                lockOn = false;
+                //ロックオン中に右十字ボタンを押されたときの処理
+                lockOnCameraPosition(m_lockOnController.LockOnTarget(1));
+            }
+            else if (Input.GetAxis(m_lockOnSelectKey) < -0.5 && lockOn == true)
+            {
+                lockOn = false;
+                //ロックオン中に左十字ボタンを押されたときの処理
+                lockOnCameraPosition(m_lockOnController.LockOnTarget(-1));
+            }
+            else
+            {
+                //ロックオン中のそれ以外のときの処理
+                lockOnCameraPosition(m_lockOnController.LockOnTarget(0));
+            }
         }
         else
         {
+            //通常時のカメラの処理を呼ぶ
             updatePosition(lookAtPos);
             updateAngle(Input.GetAxis("RightHorizontal"), Input.GetAxis("RightVertical"));
             transform.LookAt(lookAtPos);
         }
+
+
+        if(Input.GetAxis(m_lockOnSelectKey) == 0)
+        {
+            lockOn = true;
+        }
     }
 
+    //通常時カメラの角度を変える処理
     void updateAngle(float x, float y)
     {
         x = azimuthalAngle - x * CameraXSpeed;
@@ -61,6 +102,7 @@ public class CameraController : MonoBehaviour
         polarAngle = Mathf.Clamp(y, minPolarAngle, maxPolarAngle);
     }
 
+    //通常時カメラの位置を変える処理
     void updatePosition(Vector3 lookAtPos)
     {
         var da = azimuthalAngle * Mathf.Deg2Rad;
@@ -71,14 +113,22 @@ public class CameraController : MonoBehaviour
             lookAtPos.z + distance * Mathf.Sin(dp) * Mathf.Sin(da));
     }
 
-    void lockOnCameraPosition()
+    //カメラのロックオン処理のための処理
+    void lockOnCameraPosition(GameObject obj)
     {
-
-        transform.position = new Vector3(
-            target.transform.position.x + (target.transform.position.x - m_target.transform.position.x),
+        //プレイヤーとターゲット中の敵とのベクトルを取りカメラの位置と角度を移動
+        Vector3 vec = new Vector3(
+            target.transform.position.x + (target.transform.position.x - obj.transform.position.x),
             m_lockOnYPosition,
-            target.transform.position.z + (target.transform.position.z - m_target.transform.position.z));
-        
-        transform.LookAt(m_target.transform.position);
-    } 
+            target.transform.position.z + (target.transform.position.z - obj.transform.position.z));
+        if (vec.magnitude  >= cameraDistance ) {
+            transform.position = vec.normalized * cameraDistance;
+        }
+        else
+        {
+            transform.position = vec;
+        }
+
+        transform.LookAt(obj.transform.position);
+    }   
 }
