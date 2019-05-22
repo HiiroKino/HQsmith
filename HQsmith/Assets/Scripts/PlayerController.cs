@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -45,6 +46,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     float kyouAttack = 7f;
 
+    //カチボシゲージUI
+    Image katibosimeter;
+
+    //防御ゲージUI
+    Image Guardmeter;
+
     //コンボ用のカウント
     float ComboCount;
 
@@ -65,6 +72,9 @@ public class PlayerController : MonoBehaviour
         katibosigage = 0;
         katibosiCount = 0;
         StartCoroutine("AaGage");
+
+
+
     }
 
     // Update is called once per frame
