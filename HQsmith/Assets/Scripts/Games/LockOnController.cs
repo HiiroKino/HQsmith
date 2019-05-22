@@ -29,8 +29,8 @@ public class LockOnController : MonoBehaviour
 
         for (int i = 1; i < list.Count; i++)
         {
-            float x = AngleSort(list[i]);
-            float y = AngleSort(list[i-1]);
+            float x = GetAngle(list[i]);
+            float y = GetAngle(list[i-1]);
 
             for (int j = i; 0 < j ; j--)
             {
@@ -40,35 +40,40 @@ public class LockOnController : MonoBehaviour
                     GameObject Storage1 = list[i];
                     list[i] = list[i - 1];
                     list[i - 1] = Storage1;
+                    i = 1;
                 }
             } 
         }
 
-        MainTarget = list[0]; 
-
+        MainTarget = list[0];
+        int n = 0;
         for(int x = 1; x < list.Count; x++)
         {
-            if(System.Math.Abs(AngleSort(list[x-1])) > System.Math.Abs(AngleSort(list[x])))
+            if(System.Math.Abs(GetAngle(list[x-1])) > System.Math.Abs(GetAngle(list[x])))
             {
-                if (list.Count - 1 < x + target)
-                {
-                    MainTarget = list[0];
-                }
-                else if (0 > x + target)
-                {
-                    MainTarget = list[list.Count - 1];
-                }
-                else
-                {
-                    MainTarget = list[x + target];
-                }
+                n = x;
             }
-        } 
+        }
+
+        if (list.Count - 1 < n + target)
+        {
+            MainTarget = list[0];
+        }
+        else if (0 > n + target)
+        {
+            MainTarget = list[list.Count - 1];
+        }
+        else
+        {
+            MainTarget = list[n + target];
+        }
+
+        Debug.Log("min=" + n);
         return MainTarget;
     }
 
     //ソート用の値を出すためのメソッド
-    float AngleSort(GameObject obj)
+    float GetAngle(GameObject obj)
     {
         Vector3 diff = obj.transform.position - cameraTransform.position;
 
@@ -91,4 +96,6 @@ public class LockOnController : MonoBehaviour
     {
         list.Remove(obj);
     }   
+
+
 }

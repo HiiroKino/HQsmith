@@ -12,6 +12,9 @@ public class UserController : MonoBehaviour
 
     bool m_guardflag;
 
+    //アニメーション中か判断するフラグ
+    bool DuringAnimation;
+
     //コントローラーで入力された値を入力
     float Horizontal;
     float Vertical;
@@ -21,6 +24,7 @@ public class UserController : MonoBehaviour
 
     //弱攻撃用のタイマー
     float m_attackTimer;
+    float m_attackIntervalTimer;
 
     public KeyCode m_attack1Key = KeyCode.Joystick1Button1;    //弱攻撃ボタン
     public KeyCode m_attack2Key = KeyCode.Joystick1Button2;    //強攻撃ボタン
@@ -46,6 +50,7 @@ public class UserController : MonoBehaviour
     void Start()
     {
         m_aaGage = 0;
+        DuringAnimation = false;
     }
 
     // Update is called once per frame
@@ -60,45 +65,12 @@ public class UserController : MonoBehaviour
         //ダッシュ処理
         DashFlag();
 
-        //弱攻撃ボタン処理
-        if (Input.GetKeyDown(m_attack1Key))
-        { 
-            Attack();
-        }
-        //強攻撃ノックバック攻撃ボタン処理
-        if (Input.GetKeyDown(m_attack2Key))
-        {
-            if (m_guardflag == false)
-            {
-                m_attackType = AttackType.StrongAttack;
-            }
-            else
-            {
-                m_attackType = AttackType.KnockBackAttack;
-            }
-            Attack();
-        }
-        //挑発ぼたん処理
-        if (Input.GetKeyDown(m_provokeKey))
-        {
-            m_attackType = AttackType.provoke;
-            Attack();
-        }
+        //タイマー処理
+        AttackTimer();
 
-        //弱攻撃のための時間
-        if(m_attackTimer > 0)
+        if (DuringAnimation == false && m_attackIntervalTimer <= 0)
         {
-            m_attackTimer -= Time.deltaTime;
-        }
-        else if(m_attackTimer <= 0)
-        {
-            m_attackType = AttackType.Attack1;
-        }
-
-        //AAアタックのボタン処理
-        if(Input.GetKeyDown(m_AaAttackKey) && m_playerController.m_aaGageState == PlayerController.AAGageState.None)
-        {
-            AaAttack();
+            AttackButton();
         }
     }
 
@@ -112,20 +84,77 @@ public class UserController : MonoBehaviour
         m_playerController.Vertical = Vertical;
     }
 
+    //攻撃用のボタン処理
+    void AttackButton()
+    {
+        //弱攻撃ボタン処理
+        if (Input.GetKeyDown(m_attack1Key))
+        {
+            DuringAnimation = true;
+            Attack();
+        }
+        //強攻撃ノックバック攻撃ボタン処理
+        if (Input.GetKeyDown(m_attack2Key))
+        {
+            if (m_guardflag == false)
+            {
+                DuringAnimation = true;
+                m_attackType = AttackType.StrongAttack;
+            }
+            else
+            {
+                DuringAnimation = true;
+                m_attackType = AttackType.KnockBackAttack;
+            }
+            Attack();
+        }
+        //挑発ぼたん処理
+        if (Input.GetKeyDown(m_provokeKey))
+        {
+            DuringAnimation = true;
+            m_attackType = AttackType.provoke;
+            Attack();
+        }   
+
+        //AAアタックのボタン処理
+        if (Input.GetKeyDown(m_AaAttackKey) && m_playerController.m_aaGageState == PlayerController.AAGageState.None)
+        {
+            AaAttack();
+        }
+    }
+
+    //攻撃用のタイマーの処理
+    void AttackTimer()
+    {
+        //弱攻撃のための時間
+        if (m_attackTimer > 0)
+        {
+            m_attackTimer -= Time.deltaTime;
+        }
+        else if (m_attackTimer <= 0)
+        {
+            m_attackType = AttackType.Attack1;
+        }
+
+        //攻撃用のインターバルタイマー
+        if (m_attackIntervalTimer > 0)
+        {
+            m_attackIntervalTimer -= Time.deltaTime;
+        }
+    }
+
     //攻撃処理のための関数
-    public void Attack()
+    void Attack()
     {
         if (m_guardflag == false) {
             if (m_attackType == AttackType.Attack1)
             {
-                m_attackType = AttackType.Attack2;
-                m_attackTimer = 1f;
+                m_attackType = AttackType.Attack2;           
                 m_playerController.PlayAnimation("Attack1");
             }
             else if (m_attackType == AttackType.Attack2)
             {
                 m_attackType = AttackType.Attack3;
-                m_attackTimer = 1f;
                 m_playerController.PlayAnimation("Attack2");
             }
             else if (m_attackType == AttackType.Attack3)
@@ -190,7 +219,12 @@ public class UserController : MonoBehaviour
         {
             m_playerController.DashFlag(false);
         }
-    }
+    }  
 
-    
+    void OnAnimationFinished()
+    {
+        DuringAnimation = false;
+        m_attackTimer = 1f;
+        m_attackIntervalTimer = 0.5f;
+    }
 }

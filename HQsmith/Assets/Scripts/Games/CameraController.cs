@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     public GameObject target; // an object to follow
     public Vector3 offset; // offset form the target object
 
+    private GameObject LockOnTarget = null;
+
     LockOnController m_lockOnController;
     [SerializeField]
     PlayerController m_playerController;
@@ -54,28 +56,33 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {   
         var lookAtPos = target.transform.position + offset;
+
+        if (Input.GetKeyDown(m_lockOnKey))
+        {
+            LockOnTarget = m_lockOnController.LockOnTarget(0);
+        }
         
         //カメラのロックオンボタンの処理
         if (Input.GetKey(m_lockOnKey))
-        {
+        {           
             //ロックオンコントローラーの中のロックオン処理を呼ぶ
             if (Input.GetAxis(m_lockOnSelectKey) > 0.5 && lockOn == true)
             {
+                Debug.Log(Input.GetAxis(m_lockOnSelectKey));
                 lockOn = false;
                 //ロックオン中に右十字ボタンを押されたときの処理
-                lockOnCameraPosition(m_lockOnController.LockOnTarget(1));
+                LockOnTarget = m_lockOnController.LockOnTarget(1);
             }
             else if (Input.GetAxis(m_lockOnSelectKey) < -0.5 && lockOn == true)
             {
+                Debug.Log(Input.GetAxis(m_lockOnSelectKey));
                 lockOn = false;
                 //ロックオン中に左十字ボタンを押されたときの処理
-                lockOnCameraPosition(m_lockOnController.LockOnTarget(-1));
+                LockOnTarget = m_lockOnController.LockOnTarget(-1);
             }
-            else
-            {
-                //ロックオン中のそれ以外のときの処理
-                lockOnCameraPosition(m_lockOnController.LockOnTarget(0));
-            }
+
+            lockOnCameraPosition(LockOnTarget);
+
         }
         else
         {
@@ -121,6 +128,7 @@ public class CameraController : MonoBehaviour
             target.transform.position.x + (target.transform.position.x - obj.transform.position.x),
             m_lockOnYPosition,
             target.transform.position.z + (target.transform.position.z - obj.transform.position.z));
+
         if (vec.magnitude  >= cameraDistance ) {
             transform.position = vec.normalized * cameraDistance;
         }
