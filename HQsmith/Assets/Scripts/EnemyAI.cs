@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
     NavMeshAgent m_navMeshAgent;
 
     int m_chooseAction = 0;
-    int m_chooseAngle = 0;
+    int m_choosePos = 0;
 
     Transform m_position;
 
@@ -53,6 +53,13 @@ public class EnemyAI : MonoBehaviour
             actionIntervalTimer -= Time.deltaTime;
         }
 
+
+        //ステップインターバルタイマー
+        if (StepIntervalTimer > 0)
+        {
+            StepIntervalTimer -= Time.deltaTime;
+        }
+
         switch (m_actionType)
         {
             case ActionType.Attack:
@@ -74,12 +81,6 @@ public class EnemyAI : MonoBehaviour
                 GetClose();
                 break;
         }
-
-        //ステップインターバルタイマー
-        if (StepIntervalTimer > 0)
-        {
-            StepIntervalTimer -= Time.deltaTime;
-        }
     }
 
     void Attack()
@@ -96,10 +97,10 @@ public class EnemyAI : MonoBehaviour
             Debug.Log("Escape!!!");
             actionIntervalTimer = 1.0f;
             StepIntervalTimer = 0.7f;
-            switch (m_chooseAngle = Random.Range(0, 2))
+            switch (m_choosePos = Random.Range(0, 2))
             {
                 case 0:
-                    m_position.position += new Vector3(5, 0);
+                    m_position.position += new Vector3(5, 0);                   
                     break;
                 case 1:
                     m_position.position += new Vector3(-5, 0);
