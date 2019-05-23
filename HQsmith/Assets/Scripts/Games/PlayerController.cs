@@ -6,8 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     //ユーザーコントローラーから送られてきた値をもらうための関数
     float m_horizontal;
-    float m_vertical;
-
+    float m_vertical;   
+    
+    //シンプルアニメーション
+    SimpleAnimation m_simpleAnimation;
     //敵のプレイヤーコントローラー
     [SerializeField]
     PlayerController m_enemyPlayerController;
@@ -15,6 +17,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     UserController m_enemyUsetController;
 
+    [SerializeField]
+    BoxCollider WeponColider;
+
+    //アニメーション中じゃないか判断
+    bool DuringAnimation;
     //ガード用のフラグ
     bool m_guardFlag;
     
@@ -61,17 +68,23 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DuringAnimation = false;
+        WeponColider.enabled = false;
         ComboCount = 0;
         katibosigage = 0;
         katibosiCount = 0;
         StartCoroutine("AaGage");
+        m_simpleAnimation = GetComponent<SimpleAnimation>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //移動処理用関数
-        MovePlayer();
+        if (DuringAnimation == false)
+        {
+            MovePlayer();
+        }
         
         //ステップインターバルタイマー
         if(StepIntervalTimer > 0)
@@ -88,11 +101,28 @@ public class PlayerController : MonoBehaviour
         {
             m_aaGageState = AAGageState.one;
         }
+
+        //ガード用処理
+        if (m_guardFlag == true)
+        {
+            Guard();
+        }
+
     }
 
     //移動処理
     public void MovePlayer()
     {
+        if (m_guardFlag == false) {
+            if (m_vertical == 0 && m_horizontal == 0) {
+                //何もしていない時のアニメーション処理
+                m_simpleAnimation.CrossFade("Idle", 0.3f);
+            }
+            else {
+                //走るときのアニメーション処理
+                m_simpleAnimation.CrossFade("Run", 0.3f);
+            }
+        }
         // カメラの方向から、X-Z平面の単位ベクトルを取得
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
@@ -124,6 +154,11 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    void Guard()
+    {
+        m_simpleAnimation.CrossFade("Guard",0.3f);
+    }
 
     //ガード処理
     public void GuardFlag(bool value)
@@ -144,9 +179,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //アニメーション再生
     public void PlayAnimation(string str)
     {
-        Debug.Log(str);
+        DuringAnimation = true;
+        Debug.Log("攻撃アニメーション中だよ～" + " " + str);
+        m_simpleAnimation.CrossFade(str, 0.4f);
     }
 
     public void AaAttack(string str)
@@ -226,38 +264,73 @@ public class PlayerController : MonoBehaviour
         m_guardGage -= damege;
     }
 
+    //ボックスコライダーに攻撃が当たった時の処理
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "sword")
         {
-            switch (m_enemyUsetController.m_attackType)
-            {
-                case UserController.AttackType.Attack1:
-                    ComboCount++;
-                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                    KatibosiGage(zyakuDamage);
-                    break;
-                case UserController.AttackType.Attack2:
-                    ComboCount++;
-                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                    KatibosiGage(zyakuDamage);
-                    break;
-                case UserController.AttackType.Attack3:
-                    ComboCount++;
-                    m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                    KatibosiGage(zyakuDamage);
-                    break;
-                case UserController.AttackType.StrongAttack:
-                    ComboCount++;
-                    m_enemyPlayerController.KatibosiGage(kyouAttack);
-                    KatibosiGage(kyouDamage);
-                    break;
-                case UserController.AttackType.KnockBackAttack:
-                    ComboCount++;
-                    m_enemyPlayerController.KatibosiGage(kyouAttack);
-                    KatibosiGage(kyouDamage);
-                    break;
-            }
+            Damage();
         }
+    }
+
+    //攻撃が当たった時の処理
+    void Damage()
+    {
+        switch (m_enemyUsetController.m_attackType)
+        {
+            case UserController.AttackType.Attack1:
+                ComboCount++;
+                m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                KatibosiGage(zyakuDamage);
+                break;
+            case UserController.AttackType.Attack2:
+                ComboCount++;
+                m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                KatibosiGage(zyakuDamage);
+                break;
+            case UserController.AttackType.Attack3:
+                ComboCount++;
+                m_enemyPlayerController.KatibosiGage(zyakuAttack);
+                KatibosiGage(zyakuDamage);
+                break;
+            case UserController.AttackType.StrongAttack:
+                ComboCount++;
+                m_enemyPlayerController.KatibosiGage(kyouAttack);
+                KatibosiGage(kyouDamage);
+                break;
+            case UserController.AttackType.KnockBackAttack:
+                ComboCount++;
+                m_enemyPlayerController.KatibosiGage(kyouAttack);
+                KatibosiGage(kyouDamage);
+                break;
+        }
+    }
+
+    //コライダー用のアニメーションイベント
+    //---------------------------------------------
+    void StartAttack()
+    {
+        WeponColider.enabled = true;
+    }
+
+    void EndAttack()
+    {
+        WeponColider.enabled = false;
+    }
+    //---------------------------------------------
+
+    void OnAnimationFinished()
+    {
+        DuringAnimation = false;
+    }
+
+    //足音用のアニメーションイベント
+    void FootR()
+    {
+
+    }
+    void FootL()
+    {
+
     }
 }
