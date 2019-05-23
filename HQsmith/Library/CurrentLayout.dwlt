@@ -21,7 +21,11 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 2}
+<<<<<<< HEAD
   m_MinSize: {x: 950, y: 300}
+=======
+  m_MinSize: {x: 950, y: 398}
+>>>>>>> やつのばかやろう
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -43,9 +47,15 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 1920
     height: 997
   m_MinSize: {x: 950, y: 300}
+=======
+    width: 1904
+    height: 981
+  m_MinSize: {x: 950, y: 398}
+>>>>>>> やつのばかやろう
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -109,12 +119,21 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 30
+<<<<<<< HEAD
     width: 1920
     height: 947
   m_MinSize: {x: 683, y: 498}
   m_MaxSize: {x: 14004, y: 14048}
   vertical: 0
   controlID: 88
+=======
+    width: 1904
+    height: 931
+  m_MinSize: {x: 683, y: 348}
+  m_MaxSize: {x: 12008, y: 8048}
+  vertical: 0
+  controlID: 64
+>>>>>>> やつのばかやろう
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -134,12 +153,21 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 1364
     height: 947
   m_MinSize: {x: 406, y: 498}
   m_MaxSize: {x: 10002, y: 14048}
   vertical: 1
   controlID: 14
+=======
+    width: 1353
+    height: 931
+  m_MinSize: {x: 406, y: 348}
+  m_MaxSize: {x: 8006, y: 8048}
+  vertical: 1
+  controlID: 77
+>>>>>>> やつのばかやろう
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -164,7 +192,11 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
+<<<<<<< HEAD
   controlID: 15
+=======
+  controlID: 78
+>>>>>>> やつのばかやろう
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -236,19 +268,28 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< HEAD
     y: 588
     width: 1364
     height: 359
   m_MinSize: {x: 232, y: 274}
   m_MaxSize: {x: 10002, y: 10024}
   m_ActualView: {fileID: 17}
+=======
+    y: 578
+    width: 1353
+    height: 353
+  m_MinSize: {x: 102, y: 124}
+  m_MaxSize: {x: 4002, y: 4024}
+  m_ActualView: {fileID: 18}
+>>>>>>> やつのばかやろう
   m_Panes:
   - {fileID: 17}
   - {fileID: 18}
   - {fileID: 19}
   - {fileID: 20}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -387,9 +428,15 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
+<<<<<<< HEAD
       m_SelectedIDs: 
       m_LastClickedID: 0
       m_ExpandedIDs: 5883ffff
+=======
+      m_SelectedIDs: 4886ffff
+      m_LastClickedID: -31160
+      m_ExpandedIDs: b644ffffce44ffffd444ffffe044ffffee44fffff244ffff5045ffff5845ffff6c45ffff9645ffff4886ffff8289ffff
+>>>>>>> やつのばかやろう
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -433,10 +480,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 406
-    y: 73
-    width: 954
-    height: 568
+    x: 411
+    y: 81
+    width: 946
+    height: 558
   m_PersistentViewDataDictionary: {fileID: 0}
   m_WindowGUID: 7fcadafdd1d35d144bb7f079a182fa57
   m_SceneLighting: 1
@@ -444,9 +491,15 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
+<<<<<<< HEAD
     m_Target: {x: -2.4715576, y: -7.835493, z: 4.853386}
     speed: 2
     m_Value: {x: -2.4715576, y: -7.835493, z: 4.853386}
+=======
+    m_Target: {x: 9.501666, y: -36.066868, z: -8.363324}
+    speed: 2
+    m_Value: {x: 9.501666, y: -36.066868, z: -8.363324}
+>>>>>>> やつのばかやろう
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -474,6 +527,7 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
+<<<<<<< HEAD
     m_Target: {x: -0.33401528, y: 0.3283007, z: -0.1253795, w: -0.8746042}
     speed: 2
     m_Value: {x: -0.33401528, y: 0.3283007, z: -0.1253795, w: -0.8746042}
@@ -481,6 +535,15 @@ MonoBehaviour:
     m_Target: 44.312996
     speed: 2
     m_Value: 44.312996
+=======
+    m_Target: {x: -0.07799861, y: 0.86429095, z: -0.14152847, w: -0.4763267}
+    speed: 2
+    m_Value: {x: -0.07799861, y: 0.86429095, z: -0.14152847, w: -0.4763267}
+  m_Size:
+    m_Target: 2.6514118
+    speed: 2
+    m_Value: 2.6514118
+>>>>>>> やつのばかやろう
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -602,10 +665,17 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
+<<<<<<< HEAD
     x: 0
     y: 661
     width: 1362
     height: 339
+=======
+    x: 8
+    y: 659
+    width: 1351
+    height: 333
+>>>>>>> やつのばかやろう
   m_PersistentViewDataDictionary: {fileID: 0}
   m_SearchFilter:
     m_NameFilter: 
@@ -619,34 +689,49 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 1
     m_Folders:
+<<<<<<< HEAD
     - Assets/Scripts/Games
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
   - Assets/Scripts/Games
+=======
+    - Assets/Scripts
+  m_ViewMode: 1
+  m_StartGridSize: 60
+  m_LastFolders:
+  - Assets/Scripts
+>>>>>>> やつのばかやろう
   m_LastFoldersGridSize: 60
   m_LastProjectPath: D:\HQsmith\HQsmith
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
+<<<<<<< HEAD
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 08e20000
     m_LastClickedID: 57864
     m_ExpandedIDs: 000000007ae10000cee1000096e20000c0e200007ee30000f6e40000bee50000
+=======
+    scrollPos: {x: 0, y: 212}
+    m_SelectedIDs: c8da0000
+    m_LastClickedID: 56008
+    m_ExpandedIDs: 000000009cd90000c4d90000e0d90000f6d90000c8da0000f2da0000c4db00003edc00003edd000056dd000066dd000028de000058de000000ca9a3b
+>>>>>>> やつのばかやろう
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: SceneResources
+      m_OriginalName: SceneResources
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 56232
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 10}
     m_SearchString: 
@@ -660,7 +745,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< HEAD
     m_ExpandedIDs: 000000007ae10000cee1000096e20000c0e200007ee30000f6e40000bee50000
+=======
+    m_ExpandedIDs: 000000009cd90000f6d90000c8da0000f2da0000c4db000056dd000028de0000
+>>>>>>> やつのばかやろう
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -685,10 +774,17 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
+<<<<<<< HEAD
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 321d00008c180000701a0000d807000072bd01005403faff14a8fdff72300000f4250000d41e0000c2dffbffda070000b80f0000c4180000ac21000028110000ac3b00008c3b00006a79ecff72a1e5ffc0250000a0250000186efdff8a55fcff6efc03006c8cfbff60840000a40d01001a23000036230000c4090000402300005a0800004e080000462300007a1f0000500800002cc1000058280000d44e0000222e00009a2b0000c0270000ea2f00005c320000782c00009458000070c9000086c900009cc90000a8c700008cc5000070c600006a5e00004c5e0000dc31000068310000be310000ee00ffff32e9faff982c0000fc240100ec240100f4240100d424010068c10100f8010100c4c30100c4010100ce2e0000dc24010012b5020056b50200fab40200d6b4020030b50200e0b4020026b50200b0b402001cb50200a6b4020008b5020060b50200e4240100922c000072310000502e00009c2c0000724bf9ff202d0000f6330000d0360000ec350000443000009c340000de2b0000da31000040380000fe3500007c2f00000c3000009c3802006c380200fe380200c4380200828b0200ca300000382f00003c3200008a380000b838000074380000fabef7ff163d0000bc3a0000e03a0000e0300000b232000038330000543100005c380000cc32000000000000e628000006290000f4260000
+=======
+    m_SelectedInstanceIDs: 4886ffff
+    m_LastClickedInstanceID: -31160
+    m_HadKeyboardFocusLastEvent: 0
+    m_ExpandedInstanceIDs: 321d00008c180000701a0000d807000072bd01005403faff14a8fdff72300000f4250000d41e0000c2dffbffda070000b80f0000c4180000ac21000028110000ac3b00008c3b00006a79ecff72a1e5ffc0250000a0250000186efdff8a55fcff6efc03006c8cfbff60840000a40d01001a23000036230000c4090000402300005a0800004e080000462300007a1f0000500800002cc1000058280000d44e0000222e00009a2b0000c0270000ea2f00005c320000782c00009458000070c9000086c900009cc90000a8c700008cc5000070c600006a5e00004c5e0000dc31000068310000be310000ee00ffff32e9faff982c0000fc240100ec240100f4240100d424010068c10100f8010100c4c30100c4010100ce2e0000dc24010012b5020056b50200fab40200d6b4020030b50200e0b4020026b50200b0b402001cb50200a6b4020008b5020060b50200e4240100922c000072310000502e00009c2c0000724bf9ff202d0000f6330000d0360000ec350000443000009c340000de2b0000da31000040380000fe3500007c2f00000c3000009c3802006c380200fe380200c4380200828b0200ca300000382f00003c3200008a380000b838000074380000fabef7ff163d0000bc3a0000e03a0000e0300000b232000038330000543100005c380000cc32000000000000e628000006290000f42600007edd0000
+>>>>>>> やつのばかやろう
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

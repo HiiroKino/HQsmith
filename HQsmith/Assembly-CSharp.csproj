@@ -310,7 +310,11 @@
       <HintPath>D:/unity2018.3.4f1/Editor/Data/UnityExtensions/Unity/UnityGoogleAudioSpatializer/RuntimeEditor/UnityEngine.GoogleAudioSpatializer.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
+<<<<<<< HEAD
       <HintPath>D:/unity2018.3.4f1/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+=======
+      <HintPath>D:/unity2017/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+>>>>>>> やつのばかやろう
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/unity2018.3.4f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
