@@ -42,9 +42,10 @@ public class UserController : MonoBehaviour
         Attack3,
         StrongAttack,
         KnockBackAttack,
-        provoke
+        provoke,
+        notAttack,
     }
-    public AttackType m_attackType = AttackType.Attack1;
+    public AttackType m_attackType = AttackType.notAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -133,7 +134,7 @@ public class UserController : MonoBehaviour
         }
         else if (m_attackTimer <= 0)
         {
-            m_attackType = AttackType.Attack1;
+            m_attackType = AttackType.notAttack;
         }
 
         //攻撃用のインターバルタイマー
@@ -159,23 +160,23 @@ public class UserController : MonoBehaviour
             }
             else if (m_attackType == AttackType.Attack3)
             {
-                m_attackType = AttackType.Attack1;
+                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("Attack3");
             }
             else if (m_attackType == AttackType.StrongAttack)
             {
-                m_attackType = AttackType.Attack1;
+                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("StrongAttack");
             }
             else if (m_attackType == AttackType.provoke)
             {
-                m_attackType = AttackType.Attack1;
+                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("Provoke");
             }
         }
         if (m_attackType == AttackType.KnockBackAttack)
         {
-            m_attackType = AttackType.Attack1;
+            m_attackType = AttackType.notAttack;
             m_playerController.PlayAnimation("KnockbackAttack");
         }
     }   
