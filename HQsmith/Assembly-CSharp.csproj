@@ -61,7 +61,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Controller Tester\Scripts\DetectUnknownControllerMappings.cs" />
+    <Compile Include="Assets\Hit &amp; Slashes Vol.3\SelfDestruct.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\MobileBloom\Slashes_MobileBloom.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\SceneResources\Other\Slash_DemoGUI.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\SceneResources\Other\Slash_MouseOrbit.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\AnimationEventEffects.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Slash_AxisRotateByTime.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Slash_GrvityPoint.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Slash_Light.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Slash_UIEffectList.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Slash_WroomWroom.cs" />
+    <Compile Include="Assets\OrdosFX\Magic Slashes FX\Scripts\Teleport.cs" />
     <Compile Include="Assets\Scripts\CursorController.cs" />
+    <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\FadeCommand.cs" />
     <Compile Include="Assets\Scripts\Fadein.cs" />
     <Compile Include="Assets\Scripts\Games\CameraController.cs" />
@@ -69,6 +81,7 @@
     <Compile Include="Assets\Scripts\Games\LockOnController.cs" />
     <Compile Include="Assets\Scripts\Games\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Games\UserController.cs" />
+    <Compile Include="Assets\Scripts\MoveController.cs" />
     <Compile Include="Assets\Scripts\OutputMenus.cs" />
     <Compile Include="Assets\Scripts\TitleController.cs" />
     <Compile Include="Assets\SimpleAnimationComponent\CustomPlayableExtensions.cs" />
@@ -76,6 +89,13 @@
     <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimation_impl.cs" />
     <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimationPlayable.cs" />
     <Compile Include="Assets\SimpleAnimationComponent\SimpleAnimationPlayable_States.cs" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\Shaders\SlashBird.shader" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\MobileBloom\Resources\Slashes_Bloom.shader" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\SceneResources\Other\CullOffMobileDiffuse.shader" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\Shaders\SlashShader.shader" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\MobileBloom\Resources\Slashes_Bloom_Inc.cginc" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\Shaders\SlashParticles.shader" />
+    <None Include="Assets\OrdosFX\Magic Slashes FX\Shaders\Slash_AnimBlended.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/Owner/Desktop/GameTaisyou/HQsmith/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
@@ -291,15 +311,6 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>D:/unity2017/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Editor">
-      <HintPath>C:/Users/Owner/Desktop/GameTaisyou/HQsmith/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.StandardEvents">
-      <HintPath>C:/Users/Owner/Desktop/GameTaisyou/HQsmith/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.StandardEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Analytics.Tracker">
-      <HintPath>C:/Users/Owner/Desktop/GameTaisyou/HQsmith/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Tracker.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/unity2017/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
