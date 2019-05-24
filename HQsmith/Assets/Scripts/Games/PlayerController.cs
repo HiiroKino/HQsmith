@@ -87,10 +87,10 @@ public class PlayerController : MonoBehaviour
         katibosiCount = 0;
         StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
-        UIobj.fillAmount = 0f;
+        /*UIobj.fillAmount = 0f;
         m_kachiboshi[0].enabled = false;
         m_kachiboshi[1].enabled = false;
-        m_kachiboshi[2].enabled = false;
+        m_kachiboshi[2].enabled = false;*/
         maxCount = 0;
     }
 

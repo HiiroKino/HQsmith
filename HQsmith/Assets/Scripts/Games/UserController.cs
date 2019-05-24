@@ -148,6 +148,10 @@ public class UserController : MonoBehaviour
     void Attack()
     {
         if (m_guardflag == false) {
+            if(m_attackType == AttackType.notAttack)
+            {
+                m_attackType = AttackType.Attack1;
+            }
             if (m_attackType == AttackType.Attack1)
             {
                 m_attackType = AttackType.Attack2;           
@@ -225,7 +229,7 @@ public class UserController : MonoBehaviour
     void OnAnimationFinished()
     {
         DuringAnimation = false;
-        m_attackTimer = 1f;
+        m_attackTimer = 2f;
         m_attackIntervalTimer = 0.5f;
     }
 }

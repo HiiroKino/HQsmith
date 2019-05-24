@@ -46,7 +46,6 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(m_chooseAction);
         //Debug.Log(m_userController.m_attackType);
         if(actionIntervalTimer >= 0)
         {
