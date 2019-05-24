@@ -124,7 +124,10 @@ public class EnemyAI : MonoBehaviour
     }
     void TakeABreak()
     {
-
+        Debug.Log("Take A Break!!!");
+        actionIntervalTimer = 1.0f;
+        m_position.position += new Vector3(0, 0, 10);
+        ChangeActionType(ActionType.GetClose);
     }
     void GetClose()
     {
@@ -143,10 +146,14 @@ public class EnemyAI : MonoBehaviour
             {
                 ChangeActionType(ActionType.Guard);
             }
-            else if(m_chooseAction  >= 85)
+            else if(m_chooseAction  >= 90)
             {
                 ChangeActionType(ActionType.Escape);
-            }       
+            }
+            else if (m_chooseAction >= 80)
+            {
+                ChangeActionType(ActionType.TakeABreak);
+            }
         }
         //近付いてる最中に挑発
 
