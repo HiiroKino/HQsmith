@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
         if (m_guardFlag == false) {
             if (m_vertical == 0 && m_horizontal == 0) {
                 //何もしていない時のアニメーション処理
-                m_simpleAnimation.CrossFade("Idle", 0.3f);
+                m_simpleAnimation.CrossFade("Idle",0.3f);
             }
             else {
                 //走るときのアニメーション処理
@@ -180,9 +180,10 @@ public class PlayerController : MonoBehaviour
     }
 
     //アニメーション再生
-    public void PlayAnimation(string str)
+    public void PlayAnimation(string str , float x = 1)
     {
         DuringAnimation = true;
+        m_simpleAnimation.GetState(str).speed = x;
         Debug.Log("攻撃アニメーション中だよ～" + " " + str);
         m_simpleAnimation.CrossFade(str, 0.4f);
     }

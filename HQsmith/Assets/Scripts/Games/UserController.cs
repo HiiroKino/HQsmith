@@ -37,6 +37,7 @@ public class UserController : MonoBehaviour
     //攻撃の種類のenum
     public enum AttackType
     {
+        notAttack,
         Attack1,
         Attack2,
         Attack3,
@@ -44,7 +45,7 @@ public class UserController : MonoBehaviour
         KnockBackAttack,
         provoke
     }
-    public AttackType m_attackType = AttackType.Attack1;
+    public AttackType m_attackType = AttackType.notAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +56,7 @@ public class UserController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
         //移動処理
         MovePlayer();
 
@@ -133,7 +134,7 @@ public class UserController : MonoBehaviour
         }
         else if (m_attackTimer <= 0)
         {
-            m_attackType = AttackType.Attack1;
+            m_attackType = AttackType.notAttack;
         }
 
         //攻撃用のインターバルタイマー
@@ -146,36 +147,41 @@ public class UserController : MonoBehaviour
     //攻撃処理のための関数
     void Attack()
     {
+        
         if (m_guardflag == false) {
+            if(m_attackType == AttackType.notAttack)
+            {
+                m_attackType = AttackType.Attack1;
+            }
             if (m_attackType == AttackType.Attack1)
             {
                 m_attackType = AttackType.Attack2;           
-                m_playerController.PlayAnimation("Attack1");
+                m_playerController.PlayAnimation("Attack1", 1.5f);
             }
             else if (m_attackType == AttackType.Attack2)
             {
                 m_attackType = AttackType.Attack3;
-                m_playerController.PlayAnimation("Attack2");
+                m_playerController.PlayAnimation("Attack2",1.5f);
             }
             else if (m_attackType == AttackType.Attack3)
             {
                 m_attackType = AttackType.Attack1;
-                m_playerController.PlayAnimation("Attack3");
+                m_playerController.PlayAnimation("Attack3",1.5f);
             }
             else if (m_attackType == AttackType.StrongAttack)
             {
-                m_attackType = AttackType.Attack1;
-                m_playerController.PlayAnimation("StrongAttack");
+                m_attackType = AttackType.notAttack;
+                m_playerController.PlayAnimation("StrongAttack",1.5f);
             }
             else if (m_attackType == AttackType.provoke)
             {
-                m_attackType = AttackType.Attack1;
+                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("Provoke");
             }
         }
         if (m_attackType == AttackType.KnockBackAttack)
         {
-            m_attackType = AttackType.Attack1;
+            m_attackType = AttackType.notAttack;
             m_playerController.PlayAnimation("KnockbackAttack");
         }
     }   
@@ -224,7 +230,7 @@ public class UserController : MonoBehaviour
     void OnAnimationFinished()
     {
         DuringAnimation = false;
-        m_attackTimer = 1f;
+        m_attackTimer = 3f;
         m_attackIntervalTimer = 0.5f;
     }
 }
