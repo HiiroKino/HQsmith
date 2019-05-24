@@ -52,7 +52,7 @@ public class TimeLimit : MonoBehaviour
         //値が変わった時だけテキストUIを更新
         if ((int)seconds != (int)oldSeconds)
         {
-            timerText.text = minute.ToString("TimeLimit 00") + ":" + ((int)seconds).ToString("00");
+            timerText.text = minute.ToString("残り時間 00") + ":" + ((int)seconds).ToString("00");
         }
         oldSeconds = seconds;
 
