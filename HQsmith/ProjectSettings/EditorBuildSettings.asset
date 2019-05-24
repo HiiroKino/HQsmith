@@ -18,6 +18,12 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayScene.unity
     guid: f1f794df1fd654a44b41d239adff90d0
   - enabled: 1
+    path: Assets/Scenes/Sample.unity
+    guid: 43cb6c98baa91a34583c3cef18bcdb8b
+  - enabled: 1
+    path: Assets/Scenes/Sample_kino.unity
+    guid: 7bac44df3898e8d4d8c45bb665510df0
+  - enabled: 1
     path: Assets/Scenes/Result.unity
     guid: e1ba20b97ab2b1340947365d73991a29
   m_configObjects: {}

@@ -26,27 +26,29 @@ public class CursorController : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         m_this_position = this.GetComponent<RectTransform>();
-        m_this_position.anchoredPosition = new Vector2(-125, -110);
+        m_this_position.anchoredPosition = new Vector2(-190, -100);
     }
 
     // Update is called once per frame
     void Update()
     {
+        float y = Input.GetAxis("LeftVertical");
+
         if (!isWait && isActive)
         {
-            if (Input.GetKey(KeyCode.DownArrow))
+            if (y < 0)
             {
                 cursorPosition++;
                 MovePositions();
                 StartCoroutine("Wait");
             }
-            if (Input.GetKey(KeyCode.UpArrow))
+            if (y > 0)
             {
                 cursorPosition--;
                 MovePositions();
                 StartCoroutine("Wait");
             }
-            if (Input.GetKey(KeyCode.KeypadEnter))
+            if (Input.GetKey(KeyCode.Joystick1Button2))
             {
                 audioSource.PlayOneShot(SystemSE);
                 StartCoroutine("Checking");
@@ -58,18 +60,24 @@ public class CursorController : MonoBehaviour
 
     private void MovePositions()
     {
+        if (cursorPosition < 0)
+        {
+            cursorPosition = 1;
+        }
+
+        if (cursorPosition > 1)
+        {
+            cursorPosition = 0;
+        }
+
         switch (cursorPosition)
         {
             case 0:
-                m_this_position.anchoredPosition = new Vector2(-125, -110);
+                m_this_position.anchoredPosition = new Vector2(-190, -100);
                 audioSource.PlayOneShot(CursorSE);
                 break;
             case 1:
-                m_this_position.anchoredPosition = new Vector2(-125, -145);
-                audioSource.PlayOneShot(CursorSE);
-                break;
-            case 2:
-                m_this_position.anchoredPosition = new Vector2(-125, -180);
+                m_this_position.anchoredPosition = new Vector2(-190, -170);
                 audioSource.PlayOneShot(CursorSE);
                 break;
             default:
@@ -82,11 +90,9 @@ public class CursorController : MonoBehaviour
         switch (cursorPosition)
         {
             case 0:
-                SceneManager.LoadScene("ChooseCharactor");
+                SceneManager.LoadScene("Sample_kino");  //PlayScene
                 break;
             case 1:
-                break;
-            case 2:
                 Application.Quit();
                 break;
             default:

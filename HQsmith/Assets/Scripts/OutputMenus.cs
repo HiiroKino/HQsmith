@@ -7,18 +7,12 @@ public class OutputMenus : MonoBehaviour
 {
     [SerializeField]
     Text start;
+    
+    [SerializeField]
+    Image Play;
 
     [SerializeField]
-    Text Message;
-
-    [SerializeField]
-    Text Play;
-
-    [SerializeField]
-    Text Option;
-
-    [SerializeField]
-    Text Exit;
+    Image Exit;
 
     [SerializeField]
     Image Cursor;
@@ -31,9 +25,7 @@ public class OutputMenus : MonoBehaviour
     void Start()
     {
         start.enabled = false;
-        Message.enabled = false;
         Play.enabled = false;
-        Option.enabled = false;
         Exit.enabled = false;
         cursorController = Cursor.GetComponent<CursorController>();
         Cursor.enabled = false;
@@ -48,10 +40,8 @@ public class OutputMenus : MonoBehaviour
         }
 
         if (isStart)
-        {
-            Message.enabled = true;
-            Play.enabled = true;
-            Option.enabled = true;
+        {            
+            Play.enabled = true; 
             Exit.enabled = true;
             Cursor.enabled = true;
             cursorController.isActive = true;
