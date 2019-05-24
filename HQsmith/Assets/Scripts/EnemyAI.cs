@@ -15,11 +15,30 @@ public class EnemyAI : MonoBehaviour
         GetClose,     //接近する
     }
 
+    enum AttackType
+    {
+        Attack1,
+        Attack2,
+        Attack3,
+    }
+    AttackType m_attackType = AttackType.Attack1;
+
+    float m_comboTimer;
+
     ActionType m_actionType = ActionType.GetClose;
 
     MoveController m_moveController;
 
+    //武器用のコライダー
+    [SerializeField]
+    Collider WeponColider;
+
+    //攻撃などのアニメーション中か判定する
+    bool DuringAnimation;
+
     NavMeshAgent m_navMeshAgent;
+
+    SimpleAnimation m_simpleAnimation;
 
     int m_chooseAction = 0;
     int m_choosePos = 0;
@@ -37,10 +56,12 @@ public class EnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_moveController = this.GetComponent<MoveController>();
         m_navMeshAgent = this.GetComponent<NavMeshAgent>();
         m_position = this.GetComponent<Transform>();
         m_userController = m_target.GetComponent<UserController>();
+        DuringAnimation = false;
     }
 
     // Update is called once per frame
@@ -51,18 +72,17 @@ public class EnemyAI : MonoBehaviour
         {
             actionIntervalTimer -= Time.deltaTime;
         }
-
-
-        //ステップインターバルタイマー
-        if (StepIntervalTimer > 0)
-        {
-            StepIntervalTimer -= Time.deltaTime;
-        }
+        
+        //タイマー関連の処理
+        Timer();
 
         switch (m_actionType)
         {
             case ActionType.Attack:
-                Attack();
+                if (DuringAnimation == false)
+                {
+                    Attack();
+                }
                 break;
             case ActionType.Escape:
                 Escape();
@@ -82,11 +102,65 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    void Timer()
+    {
+
+        //ステップインターバルタイマー
+        if (StepIntervalTimer > 0)
+        {
+            StepIntervalTimer -= Time.deltaTime;
+        }
+
+        //コンボ用タイマー処理
+        if(m_comboTimer > 0)
+        {
+            m_comboTimer -= Time.deltaTime;
+        }
+        else
+        {
+            m_attackType = AttackType.Attack1;
+        }
+
+    }
+
     void Attack()
     {
         Debug.Log("EnemyAttack!!!");
         actionIntervalTimer = 1.0f;
         ChangeActionType(ActionType.GetClose);
+        m_moveController.DuringAnimation = true;
+        switch ( Random.Range(0, 2))
+        {
+            case 0:
+                if (m_attackType == AttackType.Attack1)
+                {
+                    m_simpleAnimation.CrossFade("Attack1", 0.3f);
+                    m_attackType = AttackType.Attack2;
+                    
+                }
+                if (m_attackType == AttackType.Attack2)
+                {
+                    m_simpleAnimation.CrossFade("Attack2", 0.3f);
+                    m_attackType = AttackType.Attack3;
+                }
+                if (m_attackType == AttackType.Attack3)
+                {
+                    m_simpleAnimation.CrossFade("Attack3", 0.3f);
+                    m_attackType = AttackType.Attack1;
+                }
+                DuringAnimation = true;
+                break;
+            case 1:
+                m_simpleAnimation.CrossFade("StrongAttack", 0.3f);
+                DuringAnimation = true;
+                break;
+            case 2:
+                m_simpleAnimation.CrossFade("KnockBackAttack", 0.3f);
+                DuringAnimation = true;
+                break;
+
+        }
+        
     }
 
     void Escape()
@@ -167,5 +241,26 @@ public class EnemyAI : MonoBehaviour
     void ChangeActionType(ActionType type)
     {
         m_actionType = type;
+    }
+
+    void StartAttack()
+    {
+        WeponColider.enabled = true;
+    }
+    void EndAttack()
+    {
+        WeponColider.enabled = false;
+    }
+    void OnAnimationFinished()
+    {
+        DuringAnimation = false;
+        m_comboTimer = 2f;
+        m_actionType = ActionType.GetClose;
+        m_moveController.DuringAnimation = false; 
+    }
+    
+    void InstantiateEffect()
+    {
+
     }
 }

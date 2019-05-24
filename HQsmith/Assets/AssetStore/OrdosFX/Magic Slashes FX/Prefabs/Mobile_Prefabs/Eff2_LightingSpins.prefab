@@ -1763,7 +1763,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4260607537457244}
   - component: {fileID: 95061519508189348}
-  - component: {fileID: 114921541770659546}
   m_Layer: 0
   m_Name: Eff2_LightingSpins
   m_TagString: Untagged
@@ -1808,23 +1807,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114921541770659546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742474343464944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Effects:
-  - Effect: {fileID: 1646871050452766, guid: 95b3ea755bc01f344a99fccc5f4702f8, type: 3}
-    StartPositionRotation: {fileID: 4754525449022524}
-    DestroyAfter: 6
-    UseLocalPosition: 0
 --- !u!1 &1755831447135748
 GameObject:
   m_ObjectHideFlags: 0
