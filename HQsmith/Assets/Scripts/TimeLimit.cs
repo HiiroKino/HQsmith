@@ -56,6 +56,13 @@ public class TimeLimit : MonoBehaviour
         }
         oldSeconds = seconds;
 
+        if(minute <= 0 && (int)seconds <= 0)
+        {
+            timerText.enabled = false;
+
+            timeUp.enabled = true;
+        }
+
         /*//残り5秒になったら残り時間を2秒表示
         if (minute <= 0 && (int)seconds <= 10)
         {

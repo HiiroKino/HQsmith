@@ -52,15 +52,26 @@ public class PlayerController : MonoBehaviour
 
     //AAゲージUI
     public Image aaGauge_1;
-    public Image aaGauge_2;
+    //public Image aaGauge_2;
+
+    //AAゲージ自動増加量
+    [SerializeField]
+    float autoAAgauge = 0.02f;
+
+    //AAゲージの自動上昇制御
+    private bool AAgaugeManager;
 
     //AAゲージ用の変数
     float m_aaGage;
     float m_maxAaGage = 100;
 
     //ガードゲージ用の変数
-    float m_guardGage;
+    public Image m_guardGage;
     float m_maxGuardGage = 100;
+    private bool GuardGaugeManager;
+    float autoGuardGauge = 0.05f;
+
+
 
     //カチボシ用のゲージ
     float katibosiCount;
@@ -81,10 +92,18 @@ public class PlayerController : MonoBehaviour
     public Image UIobj;
 
     //カチボシの最大個数
-    public Image[] m_kachiboshi;
+    //public Image[] m_kachiboshi;
+
+    public Animator[] m_kachiboshiAnimator;
+    //public Animator kachiboshiMaterAnimation;
+
 
     //カチボシゲージ最大到達回数
     public int maxCount;
+
+    //カチボシゲージ増加量
+    [SerializeField]
+    public float kachiboshigaugeAmount = 0.05f;
 
     //コンボ用のカウント
     float ComboCount;
@@ -106,16 +125,20 @@ public class PlayerController : MonoBehaviour
         WeponColider.enabled = false;
         ComboCount = 0;
         katibosiCount = 0;
-        StartCoroutine("AaGage");
+        //StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_userController = GetComponent<UserController>();
         gameManager = GetComponent<GameManager>();
-        /*UIobj.fillAmount = 0f;
-        m_kachiboshi[0].enabled = false;
+        UIobj.fillAmount = 0f;
+        aaGauge_1.fillAmount = 0f;
+        /*m_kachiboshi[0].enabled = false;
         m_kachiboshi[1].enabled = false;
         m_kachiboshi[2].enabled = false;*/
         maxCount = 0;
         DamageInterval = 0f;
+        m_guardGage.fillAmount = 0f;
+        AAgaugeManager = true;
+        GuardGaugeManager = true;
         StepTime = false;
     }
 
@@ -138,6 +161,51 @@ public class PlayerController : MonoBehaviour
         {
             DamageInterval -= Time.deltaTime;
         }
+
+        //UIobj.fillAmount += Time.deltaTime * 0.1f;
+
+        //カチボシゲージがマックスになったらリセットしてカチボシを１つ増やす
+        if (UIobj.fillAmount >= 1)
+        {
+
+            //kachiboshiMaterAnimation.SetBool("On", true);
+
+            //Debug.Log("fillAmount");       
+            //m_kachiboshi[maxCount].enabled = true;
+            UIobj.fillAmount = 0f;
+
+
+            if (m_kachiboshiAnimator.Length > 0)
+            {
+                m_kachiboshiAnimator[maxCount].SetBool("On", true);
+                maxCount++;
+                Debug.Log("kachiboshi");
+            }
+
+
+            //カチボシを３つ獲得したらリザルト画面へ
+            if (maxCount == 2)
+            {
+
+            }
+        }
+
+
+        //ガードゲージ自動増加処理
+        if (m_guardGage.fillAmount < 1f)
+        {
+            GuardGaugeManager = true;
+        }
+
+        if (GuardGaugeManager == true)
+        {
+            m_guardGage.fillAmount += Time.deltaTime * autoGuardGauge;
+        }
+
+
+        //AAゲージ自動増加処理
+        aaGauge_1.fillAmount += Time.deltaTime * autoAAgauge;
+
 
         ////アルティメットアタック用
         //if(m_aaGage >= 200)
@@ -190,6 +258,8 @@ public class PlayerController : MonoBehaviour
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveForward), 0.3f);
             }
         }
+
+
         else if(StepIntervalTimer <= 0 && m_guardFlag )
         {
             //ステップ処理
@@ -288,7 +358,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //AAゲージの自動増加処理
+    /*//AAゲージの自動増加処理
     IEnumerator AaGage()
     {
         m_aaGage += 1;
@@ -304,7 +374,7 @@ public class PlayerController : MonoBehaviour
             m_guardGage = m_maxGuardGage;
         }
         yield return new WaitForSeconds(1f);
-    }
+    }*/
 
     //評価ゲージのダメージ、増加処理
     public void KatibosiGage(float damege)
@@ -314,8 +384,6 @@ public class PlayerController : MonoBehaviour
         if (UIobj.fillAmount > 1f)
         {
             UIobj.fillAmount -= 0f;
-            m_kachiboshi[maxCount].enabled = true;
-            maxCount++;
         }
         if (UIobj.fillAmount < 0f)
         {
@@ -333,7 +401,7 @@ public class PlayerController : MonoBehaviour
     //ガードゲージの減少処理
     public void GuardGage(float damege)
     {
-        m_guardGage -= damege;
+        m_guardGage.fillAmount -= damege;
     }
 
     //ボックスコライダーに攻撃が当たった時の処理
@@ -346,6 +414,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+    //AAゲージ増加処理
+    public void AAgaugeMethod(float AAdamage)
+    {
+        AAdamage = autoAAgauge;
+        aaGauge_1.fillAmount = AAdamage;
+        if (aaGauge_1.fillAmount < 0f)
+        {
+            aaGauge_1.fillAmount = 1f - aaGauge_1.fillAmount;
+        }
+    }
+
     //攻撃が当たった時の処理
     public void Damage(Collider col)
     {
@@ -353,18 +433,28 @@ public class PlayerController : MonoBehaviour
         {
             case EnemyAI.AttackType.Attack1:
                 hit(zyakuAttack, zyakuDamage,col);
+                KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case EnemyAI.AttackType.Attack2:
                 hit(zyakuAttack, zyakuDamage,col);
+                KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case EnemyAI.AttackType.Attack3:
                 hit(zyakuAttack, zyakuDamage,col);
+                KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case EnemyAI.AttackType.StrongAttack:
                 hit(kyouAttack, kyouDamage,col);
+                KatibosiGage(kyouDamage);
+                AAgaugeMethod(kyouDamage);
                 break;
             case EnemyAI.AttackType.KnockBackAttack:
                 hit(kyouAttack, kyouDamage,col);
+                KatibosiGage(kyouDamage);
+                AAgaugeMethod(kyouDamage);
                 break;
         }
     }

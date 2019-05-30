@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a34b93f451f131142a89b3c0865e2fa7
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Korneuburg Slab Light
+  fontNames:
+  - Korneuburg Slab Light
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 7908a30ecc79b56459098f014c0c627f, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
