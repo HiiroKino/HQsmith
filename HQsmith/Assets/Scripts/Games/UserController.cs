@@ -5,7 +5,7 @@ using UnityEngine;
 public class UserController : MonoBehaviour
 {
     [SerializeField]
-    PlayerController m_playerController;
+    PlayerController m_playerController;  
 
     public string JoystickLeftHorizontal = "LeftHorizontal";
     public string JoystickLeftVertical = "LeftVertical";
@@ -52,6 +52,7 @@ public class UserController : MonoBehaviour
     {
         m_aaGage = 0;
         DuringAnimation = false;
+        
     }
 
     // Update is called once per frame
@@ -206,7 +207,7 @@ public class UserController : MonoBehaviour
             m_guardflag = true;
             m_playerController.GuardFlag(m_guardflag);
         }
-        else
+        else if(Input.GetKeyUp(m_GuardKey))
         {
             m_guardflag = false;
             m_playerController.GuardFlag(m_guardflag);
@@ -230,6 +231,6 @@ public class UserController : MonoBehaviour
     {
         DuringAnimation = false;
         m_attackTimer = 2f;
-        m_attackIntervalTimer = 0.5f;
+        m_attackIntervalTimer = 0.2f;
     }
 }

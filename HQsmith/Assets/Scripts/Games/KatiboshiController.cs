@@ -14,6 +14,8 @@ public class KatiboshiController : MonoBehaviour
     //カチボシ用のゲージ
     float katibosiCount;
 
+    bool m_guardFlag;
+
     //カチボシゲージUI
     public Image UIobj;
 
@@ -37,7 +39,7 @@ public class KatiboshiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        m_guardFlag = false;
     }
 
     // Update is called once per frame
@@ -45,17 +47,16 @@ public class KatiboshiController : MonoBehaviour
     {
         
     }
-    //ボックスコライダーに攻撃が当たった時の処理
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "sword")
+        if (other.tag == "Sword" && m_guardFlag == false)
         {
             Damage();
         }
     }
 
     //攻撃が当たった時の処理
-    void Damage()
+    public void Damage()
     {
         switch (m_enemyUserController.m_attackType)
         {
@@ -96,6 +97,14 @@ public class KatiboshiController : MonoBehaviour
         {
             katibosiCount--;
             UIobj.fillAmount = 1f - UIobj.fillAmount;
+        }
+    }
+
+    public bool GuardFlag
+    {
+        set
+        {
+            m_guardFlag = value;
         }
     }
 }

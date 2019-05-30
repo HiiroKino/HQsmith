@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    enum ActionType
+    public enum ActionType
     {
         Attack,       //攻撃
         Escape,       //回避
@@ -15,19 +15,31 @@ public class EnemyAI : MonoBehaviour
         GetClose,     //接近する
     }
 
-    enum AttackType
+    public enum AttackType
     {
         Attack1,
         Attack2,
         Attack3,
+        StrongAttack,
+        KnockBackAttack,
     }
-    AttackType m_attackType = AttackType.Attack1;
+    public AttackType m_attackType = AttackType.Attack1;
 
     float m_comboTimer;
+    float m_attackIntervalTimer;
 
-    ActionType m_actionType = ActionType.GetClose;
+
+    [SerializeField]
+    GameManager gameManager;
+
+
+    Vector3 vec;
+
+    public ActionType m_actionType = ActionType.GetClose;
 
     MoveController m_moveController;
+
+    KatiboshiController m_katibosiController;
 
     //武器用のコライダー
     [SerializeField]
@@ -61,44 +73,62 @@ public class EnemyAI : MonoBehaviour
         m_navMeshAgent = this.GetComponent<NavMeshAgent>();
         m_position = this.GetComponent<Transform>();
         m_userController = m_target.GetComponent<UserController>();
+        m_katibosiController = GetComponent<KatiboshiController>();
+        m_moveController.DuringAnimation = false;
         DuringAnimation = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (m_actionType == ActionType.Guard)
+        {
+            m_katibosiController.GuardFlag = true;
+        }
+        else
+        {
+            m_katibosiController.GuardFlag = false;
+        }
+        if(vec == new Vector3(0,0,0))
+        {
+            m_simpleAnimation.CrossFade("Idle", 0.3f);
+        }
+        else if (!DuringAnimation)
+        {
+            m_simpleAnimation.CrossFade("Run", 0.3f);
+        }
+
         //Debug.Log(m_userController.m_attackType);
-        if(actionIntervalTimer >= 0)
+        if (actionIntervalTimer >= 0)
         {
             actionIntervalTimer -= Time.deltaTime;
         }
         
         //タイマー関連の処理
         Timer();
-
-        switch (m_actionType)
+        if (DuringAnimation == false && m_attackIntervalTimer <= 0)
         {
-            case ActionType.Attack:
-                if (DuringAnimation == false)
-                {
+            switch (m_actionType )
+            {
+                case ActionType.Attack:
                     Attack();
-                }
-                break;
-            case ActionType.Escape:
-                Escape();
-                break;
-            case ActionType.Guard:
-                Guard();
-                break;
-            case ActionType.Provocation:
-                Provocation();
-                break;
-            case ActionType.TakeABreak:
-                TakeABreak();
-                break;
-            case ActionType.GetClose:
-                GetClose();
-                break;
+                    break;
+                case ActionType.Escape:
+                    Escape();
+                    break;
+                case ActionType.Guard:
+                    Guard();
+                    break;
+                case ActionType.Provocation:
+                    Provocation();
+                    break;
+                case ActionType.TakeABreak:
+                    TakeABreak();
+                    break;
+                case ActionType.GetClose:
+                    GetClose();
+                    break;
+            }
         }
     }
 
@@ -121,6 +151,12 @@ public class EnemyAI : MonoBehaviour
             m_attackType = AttackType.Attack1;
         }
 
+        //攻撃のインターバル用のタイマー処理
+        if (m_attackIntervalTimer > 0)
+        {
+            m_attackIntervalTimer -= Time.deltaTime;
+        }
+        
     }
 
     void Attack()
@@ -129,7 +165,8 @@ public class EnemyAI : MonoBehaviour
         actionIntervalTimer = 1.0f;
         ChangeActionType(ActionType.GetClose);
         m_moveController.DuringAnimation = true;
-        switch ( Random.Range(0, 2))
+        int i = Random.Range(0, 3);
+        switch (i)
         {
             case 0:
                 if (m_attackType == AttackType.Attack1)
@@ -138,12 +175,12 @@ public class EnemyAI : MonoBehaviour
                     m_attackType = AttackType.Attack2;
                     
                 }
-                if (m_attackType == AttackType.Attack2)
+                else if (m_attackType == AttackType.Attack2)
                 {
                     m_simpleAnimation.CrossFade("Attack2", 0.3f);
                     m_attackType = AttackType.Attack3;
                 }
-                if (m_attackType == AttackType.Attack3)
+                else if (m_attackType == AttackType.Attack3)
                 {
                     m_simpleAnimation.CrossFade("Attack3", 0.3f);
                     m_attackType = AttackType.Attack1;
@@ -151,10 +188,12 @@ public class EnemyAI : MonoBehaviour
                 DuringAnimation = true;
                 break;
             case 1:
+                m_attackType = AttackType.StrongAttack;
                 m_simpleAnimation.CrossFade("StrongAttack", 0.3f);
                 DuringAnimation = true;
                 break;
             case 2:
+                m_attackType = AttackType.KnockBackAttack;
                 m_simpleAnimation.CrossFade("KnockBackAttack", 0.3f);
                 DuringAnimation = true;
                 break;
@@ -256,11 +295,31 @@ public class EnemyAI : MonoBehaviour
         DuringAnimation = false;
         m_comboTimer = 2f;
         m_actionType = ActionType.GetClose;
-        m_moveController.DuringAnimation = false; 
+        m_moveController.DuringAnimation = false;
+        m_attackIntervalTimer = 2f;
+        m_navMeshAgent.SetDestination(m_target.transform.position);
+    }
+
+    public Vector3 TransFormEnemy
+    {
+        set
+        {
+            vec = value;
+        }
     }
     
     void InstantiateEffect()
     {
 
+    }
+
+    void FootR()
+    {
+
+    }
+
+    void FootL()
+    {
+        
     }
 }

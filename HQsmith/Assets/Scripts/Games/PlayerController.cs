@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,16 +12,32 @@ public class PlayerController : MonoBehaviour
     
     //シンプルアニメーション
     SimpleAnimation m_simpleAnimation;
-    //敵のプレイヤーコントローラー
+    ////敵のプレイヤーコントローラー
+    //[SerializeField]
+    //PlayerController m_enemyPlayerController;
+    ////敵のユーザーコントローラー
+    //[SerializeField]
+    //UserController m_enemyUsetController;
     [SerializeField]
-    PlayerController m_enemyPlayerController;
-    //敵のユーザーコントローラー
+    GameObject HitEffect;
+
     [SerializeField]
-    UserController m_enemyUsetController;
+    KatiboshiController m_katibosiController;
+
+
+    [SerializeField]
+    GameManager gameManager;
+
+
+    [SerializeField]
+    EnemyAI m_enemyAi;
+
+    UserController m_userController;
 
     [SerializeField]
     BoxCollider WeponColider;
 
+    bool StepTime;
     //アニメーション中じゃないか判断
     bool DuringAnimation;
     //ガード用のフラグ
@@ -87,11 +104,14 @@ public class PlayerController : MonoBehaviour
         katibosiCount = 0;
         StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
+        m_userController = GetComponent<UserController>();
+        gameManager = GetComponent<GameManager>();
         /*UIobj.fillAmount = 0f;
         m_kachiboshi[0].enabled = false;
         m_kachiboshi[1].enabled = false;
         m_kachiboshi[2].enabled = false;*/
         maxCount = 0;
+        StepTime = false;
     }
 
     // Update is called once per frame
@@ -130,16 +150,18 @@ public class PlayerController : MonoBehaviour
     //移動処理
     public void MovePlayer()
     {
-        if (m_guardFlag == false) {
-            if (m_vertical == 0 && m_horizontal == 0) {
+        if (m_guardFlag == false ) {
+            if (m_vertical == 0 && m_horizontal == 0 && m_userController.m_attackType == UserController.AttackType.notAttack) {
                 //何もしていない時のアニメーション処理
-                m_simpleAnimation.CrossFade("Idle",0.3f);
+                m_simpleAnimation.CrossFade("Idle",0.1f);
             }
-            else {
+            else if(DuringAnimation == false)
+            {
                 //走るときのアニメーション処理
-                m_simpleAnimation.CrossFade("Run", 0.3f);
+                m_simpleAnimation.CrossFade("Run", 0.1f);
             }
         }
+        
         // カメラの方向から、X-Z平面の単位ベクトルを取得
         Vector3 cameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
 
@@ -161,20 +183,30 @@ public class PlayerController : MonoBehaviour
         else if(StepIntervalTimer <= 0 && m_guardFlag )
         {
             //ステップ処理
-            if (Mathf.Abs(moveForward.x) >= 0.5 || Mathf.Abs(moveForward.z) >= 0.5)
+            if (m_horizontal > 0.5)
             {
-                Debug.Log("ステップ");
-                //ステップのインターバル
-                StepIntervalTimer = 0.7f;
-                //移動方向にステップ
-                transform.position += moveForward * 30f * Time.deltaTime;
+                //Debug.Log("ステップ");
+                ////ステップのインターバル
+                //StepIntervalTimer = 0.7f;
+                ////移動方向にステップ
+                //transform.position += moveForward * 30f * Time.deltaTime;
+                DuringAnimation = true;
+                m_simpleAnimation.CrossFade("RightStep", 0.1f);
+            }
+            else if(m_horizontal < -0.5)
+            {
+                DuringAnimation = true;
+                m_simpleAnimation.CrossFade("LeftStep", 0.1f);
             }
         }
     }
     
     void Guard()
     {
-        m_simpleAnimation.CrossFade("Guard",0.3f);
+        if (DuringAnimation == false)
+        {
+            m_simpleAnimation.CrossFade("Guard", 0.3f);
+        }
     }
 
     //ガード処理
@@ -197,12 +229,12 @@ public class PlayerController : MonoBehaviour
     }
 
     //アニメーション再生
-    public void PlayAnimation(string str , float x = 1)
+    public void PlayAnimation(string str , float x = 1.3f)
     {
         DuringAnimation = true;
         m_simpleAnimation.GetState(str).speed = x;
         Debug.Log("攻撃アニメーション中だよ～" + " " + str);
-        m_simpleAnimation.CrossFade(str, 0.4f);
+        m_simpleAnimation.CrossFade(str, 0.1f);
     }
 
     public void AaAttack(string str)
@@ -264,7 +296,7 @@ public class PlayerController : MonoBehaviour
     {
         damege *= (1 + ComboCount / 10);
         UIobj.fillAmount += damege;
-        if(UIobj.fillAmount > 1f)
+        if (UIobj.fillAmount > 1f)
         {
             UIobj.fillAmount -= 0f;
             m_kachiboshi[maxCount].enabled = true;
@@ -274,6 +306,12 @@ public class PlayerController : MonoBehaviour
         {
             katibosiCount--;
             UIobj.fillAmount = 1f - UIobj.fillAmount;
+        }
+
+        if(maxCount == 3)
+        {
+            gameManager.Player = true;
+            SceneManager.LoadScene("Result");
         }
     }
 
@@ -286,43 +324,44 @@ public class PlayerController : MonoBehaviour
     //ボックスコライダーに攻撃が当たった時の処理
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "sword")
+        if (other.tag == "Sword" && m_guardFlag == false)
         {
             Damage();
         }
     }
 
     //攻撃が当たった時の処理
-    void Damage()
+    public void Damage()
     {
-        switch (m_enemyUsetController.m_attackType)
+        Debug.Log("Hit");
+        switch (m_enemyAi.m_attackType)
         {
-            case UserController.AttackType.Attack1:
-                ComboCount++;
-                m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                KatibosiGage(zyakuDamage);
+            case EnemyAI.AttackType.Attack1:
+                hit(zyakuAttack, zyakuDamage);
                 break;
-            case UserController.AttackType.Attack2:
-                ComboCount++;
-                m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                KatibosiGage(zyakuDamage);
+            case EnemyAI.AttackType.Attack2:
+                hit(zyakuAttack, zyakuDamage);
                 break;
-            case UserController.AttackType.Attack3:
-                ComboCount++;
-                m_enemyPlayerController.KatibosiGage(zyakuAttack);
-                KatibosiGage(zyakuDamage);
+            case EnemyAI.AttackType.Attack3:
+                hit(zyakuAttack, zyakuDamage);
                 break;
-            case UserController.AttackType.StrongAttack:
-                ComboCount++;
-                m_enemyPlayerController.KatibosiGage(kyouAttack);
-                KatibosiGage(kyouDamage);
+            case EnemyAI.AttackType.StrongAttack:
+                hit(kyouAttack, kyouDamage);
                 break;
-            case UserController.AttackType.KnockBackAttack:
-                ComboCount++;
-                m_enemyPlayerController.KatibosiGage(kyouAttack);
-                KatibosiGage(kyouDamage);
+            case EnemyAI.AttackType.KnockBackAttack:
+                hit(kyouAttack, kyouDamage);
                 break;
         }
+    }
+
+    void hit(float Attack, float Damage)
+    {
+        DuringAnimation = true;
+        GameObject Effect = Instantiate(HitEffect);
+        Destroy(Effect, 1f);
+        m_simpleAnimation.CrossFade("Hit", 0.3f);
+        m_katibosiController.KatibosiGage(Attack);
+        KatibosiGage(Damage);
     }
 
     //コライダー用のアニメーションイベント
@@ -351,5 +390,17 @@ public class PlayerController : MonoBehaviour
     void FootL()
     {
 
+    }
+
+    void StepStart()
+    {
+        StepTime = true;        
+    }
+
+    void StepEnd()
+    {
+        DuringAnimation = false;
+        StepTime = false;
+        StepIntervalTimer = 0.7f;
     }
 }

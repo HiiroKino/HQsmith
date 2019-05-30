@@ -27,6 +27,11 @@ public class LockOnController : MonoBehaviour
     {
         GameObject MainTarget;
 
+        if (list.Count == 0)
+        {
+            return null;
+        }
+
         for (int i = 1; i < list.Count; i++)
         {
             float x = GetAngle(list[i]);
@@ -68,7 +73,6 @@ public class LockOnController : MonoBehaviour
             MainTarget = list[n + target];
         }
 
-        Debug.Log("min=" + n);
         return MainTarget;
     }
 
