@@ -31,15 +31,29 @@ public class PlayerController : MonoBehaviour
 
     //AAゲージUI
     public Image aaGauge_1;
-    public Image aaGauge_2;
+    //public Image aaGauge_2;
 
     //AAゲージ用の変数
     float m_aaGage;
-    float m_maxAaGage = 200;
+    float m_maxAaGage = 100;
+
+    //AAゲージ自動増加量
+    [SerializeField]
+    float autoAAgauge = 0.05f;
+
+    //AAゲージの自動上昇制御
+    private bool AAgaugeManager;
+
+    //AAゲージ増加量
+    [SerializeField]
+    float AAgaugeAmount = 0.05f;
+
 
     //ガードゲージ用の変数
-    float m_guardGage;
+    public Image m_guardGage;
     float m_maxGuardGage = 100;
+    private bool GuardGaugeManager;
+    float autoGuardGauge = 0.05f;
 
     //カチボシ用のゲージ
     float katibosiCount;
@@ -65,10 +79,11 @@ public class PlayerController : MonoBehaviour
     //カチボシゲージ最大到達回数
     public int maxCount;
 
-    //コンボ用のカウント
-    float ComboCount;
-
-    public bool _isRendered = true;
+    //カチボシゲージ増加量
+    [SerializeField]
+    public float kachiboshigaugeAmount = 0.05f;
+    
+    public bool m_isRendered = true;
 
     public enum AAGageState
     {
@@ -83,15 +98,19 @@ public class PlayerController : MonoBehaviour
     {
         DuringAnimation = false;
         WeponColider.enabled = false;
-        ComboCount = 0;
         katibosiCount = 0;
-        StartCoroutine("AaGage");
+        //StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         UIobj.fillAmount = 0f;
+        aaGauge_1.fillAmount = 0f;
         m_kachiboshi[0].enabled = false;
         m_kachiboshi[1].enabled = false;
         m_kachiboshi[2].enabled = false;
         maxCount = 0;
+        m_guardGage.fillAmount = 0f;
+        AAgaugeManager = true;
+        GuardGaugeManager = true;
+
     }
 
     // Update is called once per frame
@@ -109,15 +128,63 @@ public class PlayerController : MonoBehaviour
             StepIntervalTimer -= Time.deltaTime; 
         }
 
+        
+        //UIobj.fillAmount += Time.deltaTime * 0.1f;
+
+        //カチボシゲージがマックスになったらリセットしてカチボシを１つ増やす
+        if(UIobj.fillAmount >= 1)
+        {
+            UIobj.fillAmount = 0f;
+            m_kachiboshi[maxCount].enabled = true;
+            maxCount++;
+
+            //カチボシを３つ獲得したらリザルト画面へ
+            if(maxCount == 2)
+            {
+
+            }
+        }
+
+
+        //ガードゲージ自動増加処理
+        if(m_guardGage.fillAmount >= 1f)
+        {
+            GuardGaugeManager = false;
+
+            if(m_guardGage.fillAmount < 1f)
+            {
+                GuardGaugeManager = true;
+            }
+        }
+        
+        if (GuardGaugeManager == true)
+        {
+            m_guardGage.fillAmount += Time.deltaTime * autoGuardGauge;
+        }
+
+        //AAゲージ自動増加処理
+        if (AAgaugeManager == true)
+        {
+            aaGauge_1.fillAmount += Time.deltaTime * autoAAgauge;
+
+            if(aaGauge_1.fillAmount >= 1f)
+            {
+                AaAttack("None");
+            }
+
+        }
+
+        
+
         //アルティメットアタック用
-        if(m_aaGage >= 200)
+        /*if(m_aaGage >= 1f)
         {
             m_aaGageState = AAGageState.two;
         }
-        else if(m_aaGage >= 100)
+        else if(m_aaGage >= 0.5f)
         {
             m_aaGageState = AAGageState.one;
-        }
+        }*/
 
         //ガード用処理
         if (m_guardFlag == true)
@@ -205,10 +272,11 @@ public class PlayerController : MonoBehaviour
         m_simpleAnimation.CrossFade(str, 0.4f);
     }
 
+    //リセット
     public void AaAttack(string str)
     {
         Debug.Log(str);
-        m_aaGage = 0;
+        aaGauge_1.fillAmount = 0f;
         m_aaGageState = AAGageState.None;
     }
 
@@ -233,22 +301,23 @@ public class PlayerController : MonoBehaviour
     {
         if (Camera.current.tag == "PlayerCamera")
         {
-            _isRendered = true;
+            m_isRendered = true;
         }
         else
         {
-            _isRendered = false;
+            m_isRendered = false;
         }
     }
 
-    //AAゲージの自動増加処理
+    /*//AAゲージの自動増加処理
     IEnumerator AaGage()
     {
-        m_aaGage += 1;
+        aaGauge_1.fillAmount += 0.01f;
+        Debug.Log("自動増加しているよ");
         yield return new WaitForSeconds(1f);
-    }
+    }*/
 
-    //ガードゲージの自動増加処理
+    /*//ガードゲージの自動増加処理
     IEnumerator GuardGage()
     {
         m_guardGage += 1;
@@ -257,18 +326,16 @@ public class PlayerController : MonoBehaviour
             m_guardGage = m_maxGuardGage;
         }
         yield return new WaitForSeconds(1f);
-    }
+    }*/
 
     //評価ゲージのダメージ、増加処理
     public void KatibosiGage(float damege)
     {
-        damege *= (1 + ComboCount / 10);
+        damege = kachiboshigaugeAmount;
         UIobj.fillAmount += damege;
         if(UIobj.fillAmount > 1f)
         {
             UIobj.fillAmount -= 0f;
-            m_kachiboshi[maxCount].enabled = true;
-            maxCount++;
         }
         if (UIobj.fillAmount < 0f)
         {
@@ -280,15 +347,30 @@ public class PlayerController : MonoBehaviour
     //ガードゲージの減少処理
     public void GuardGage(float damege)
     {
-        m_guardGage -= damege;
+        m_guardGage.fillAmount -= damege;
     }
 
     //ボックスコライダーに攻撃が当たった時の処理
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "sword")
+        if (other.tag == "sword" && m_guardFlag == false)
         {
             Damage();
+        }
+        else
+        {
+            GuardGage(0.1f);
+        }
+    }
+
+    //AAゲージ増加処理
+    public void AAgaugeMethod(float AAdamage)
+    {
+        AAdamage = AAgaugeAmount;
+        aaGauge_1.fillAmount = AAdamage;
+        if(aaGauge_1.fillAmount < 0f)
+        {
+            aaGauge_1.fillAmount = 1f - aaGauge_1.fillAmount;
         }
     }
 
@@ -298,29 +380,29 @@ public class PlayerController : MonoBehaviour
         switch (m_enemyUsetController.m_attackType)
         {
             case UserController.AttackType.Attack1:
-                ComboCount++;
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case UserController.AttackType.Attack2:
-                ComboCount++;
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case UserController.AttackType.Attack3:
-                ComboCount++;
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                AAgaugeMethod(zyakuDamage);
                 break;
             case UserController.AttackType.StrongAttack:
-                ComboCount++;
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
+                AAgaugeMethod(kyouDamage);
                 break;
             case UserController.AttackType.KnockBackAttack:
-                ComboCount++;
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
+                AAgaugeMethod(kyouDamage);
                 break;
         }
     }
