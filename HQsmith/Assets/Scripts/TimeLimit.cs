@@ -15,8 +15,8 @@ public class TimeLimit : MonoBehaviour
     //たいまー表示用テキスト
     private Text timerText;
 
-    [SerializeField]
-    Text LimitCount;
+    /*[SerializeField]
+    Text LimitCount;*/
 
     [SerializeField]
     Text timeUp;
@@ -29,7 +29,7 @@ public class TimeLimit : MonoBehaviour
 
         oldSeconds = 0;
 
-        LimitCount.enabled = false;
+        //LimitCount.enabled = false;
 
         timeUp.enabled = false;
 
@@ -52,11 +52,11 @@ public class TimeLimit : MonoBehaviour
         //値が変わった時だけテキストUIを更新
         if ((int)seconds != (int)oldSeconds)
         {
-            timerText.text = minute.ToString("残り時間 00") + ":" + ((int)seconds).ToString("00");
+            timerText.text = minute.ToString("00") + ":" + ((int)seconds).ToString("00");
         }
         oldSeconds = seconds;
 
-        //残り5秒になったら残り時間を2秒表示
+        /*//残り5秒になったら残り時間を2秒表示
         if (minute <= 0 && (int)seconds <= 10)
         {
             LimitCount.enabled = true;
@@ -65,6 +65,6 @@ public class TimeLimit : MonoBehaviour
             {
                 LimitCount.enabled = false;
             }
-        }
+        }*/
     }
 }
