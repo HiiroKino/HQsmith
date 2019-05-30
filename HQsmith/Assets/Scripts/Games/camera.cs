@@ -59,11 +59,13 @@ public class camera: MonoBehaviour
 
         if (Input.GetKeyDown(m_lockOnKey))
         {
+           
             LockOnTarget = m_lockOnController.LockOnTarget(0);
+            
         }
         
         //カメラのロックオンボタンの処理
-        if (Input.GetKey(m_lockOnKey))
+        if (Input.GetKey(m_lockOnKey) && LockOnTarget != null)
         {           
             //ロックオンコントローラーの中のロックオン処理を呼ぶ
             if (Input.GetAxis(m_lockOnSelectKey) > 0.5 && lockOn == true)
@@ -80,9 +82,9 @@ public class camera: MonoBehaviour
                 //ロックオン中に左十字ボタンを押されたときの処理
                 LockOnTarget = m_lockOnController.LockOnTarget(-1);
             }
-
+            
             lockOnCameraPosition(LockOnTarget);
-
+            
         }
         else
         {

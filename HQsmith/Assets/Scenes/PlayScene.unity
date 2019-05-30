@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -346,6 +346,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231158137}
   m_CullTransparentMesh: 0
+--- !u!1 &245511775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 245511776}
+  - component: {fileID: 245511777}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &245511776
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245511775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.982858, y: 0.885018, z: -13.455653}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &245511777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245511775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f673e102465d504b9b1e4701eb41f75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: 0
+  Enemy: 0
 --- !u!1 &263318070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,8 +1174,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecd9f103ef6e144588d3b5d5ab24165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_enemyPlayerController: {fileID: 0}
-  m_enemyUsetController: {fileID: 0}
+  HitEffect: {fileID: 0}
+  m_katibosiController: {fileID: 0}
+  gameManager: {fileID: 0}
+  m_enemyAi: {fileID: 0}
   WeponColider: {fileID: 1863611957}
   aaGauge_1: {fileID: 0}
   aaGauge_2: {fileID: 0}
@@ -1322,6 +1369,10 @@ PrefabInstance:
       propertyPath: m_kachiboshi.Array.data[2]
       value: 
       objectReference: {fileID: 1215396718}
+    - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 245511777}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3594dd119fd3551488de061aecb72680, type: 3}
 --- !u!1 &978150988 stripped
@@ -1471,8 +1522,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cecd9f103ef6e144588d3b5d5ab24165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_enemyPlayerController: {fileID: 0}
-  m_enemyUsetController: {fileID: 0}
+  HitEffect: {fileID: 0}
+  m_katibosiController: {fileID: 0}
+  gameManager: {fileID: 0}
+  m_enemyAi: {fileID: 0}
   WeponColider: {fileID: 0}
   aaGauge_1: {fileID: 0}
   aaGauge_2: {fileID: 0}

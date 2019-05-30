@@ -100,10 +100,12 @@
     <Compile Include="Assets\AssetStore\RPG Character Animation Pack FREE\SuperCharacterController\SuperCharacterController\DebugDraw.cs" />
     <Compile Include="Assets\AssetStore\RPG Character Animation Pack FREE\SuperCharacterController\SuperCharacterController\Math3d.cs" />
     <Compile Include="Assets\Controller Tester\Scripts\DetectUnknownControllerMappings.cs" />
+    <Compile Include="Assets\ResultManager.cs" />
     <Compile Include="Assets\Scripts\CursorController.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\FadeCommand.cs" />
     <Compile Include="Assets\Scripts\Fadein.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Games\camera.cs" />
     <Compile Include="Assets\Scripts\Games\EnemyController.cs" />
     <Compile Include="Assets\Scripts\Games\KatiboshiController.cs" />

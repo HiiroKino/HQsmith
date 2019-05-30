@@ -10,31 +10,28 @@ public class MoveController : MonoBehaviour
     [SerializeField]
     float m_rotateSpeed = 90f;  //回転速度 度/s
 
-    [SerializeField]
-    SimpleAnimation m_simpleAnimation;
+    EnemyAI m_enemyAi;
 
     bool m_duringAnimation;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_simpleAnimation = GetComponent<SimpleAnimation>();
-        m_duringAnimation = false;
+        m_enemyAi = GetComponent<EnemyAI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        m_enemyAi.TransFormEnemy = transform.forward;
     }
 
     public void Move(float value)
     {
         if (m_duringAnimation == false)
-        {
-            m_simpleAnimation.CrossFade("Run", 0.3f);
+        {           
+            transform.position += transform.forward * m_moveSpeed * value * Time.deltaTime;
         }
-        transform.position += transform.forward * m_moveSpeed * value * Time.deltaTime;
     }
 
     public void Rotate(float value)
