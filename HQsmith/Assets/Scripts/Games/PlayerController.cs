@@ -20,14 +20,17 @@ public class PlayerController : MonoBehaviour
     //UserController m_enemyUsetController;
     [SerializeField]
     GameObject HitEffect;
+    [SerializeField]
+    GameObject AaAttackEffect;
 
     [SerializeField]
     KatiboshiController m_katibosiController;
 
+    [SerializeField]
+    Collider m_collider;
 
     [SerializeField]
     GameManager gameManager;
-
 
     [SerializeField]
     EnemyAI m_enemyAi;
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
     
     float MoveSpeed = 3f;
     float StepIntervalTimer = 0f;
+    float DamageInterval;
 
     //AAゲージUI
     public Image aaGauge_1;
@@ -52,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     //AAゲージ用の変数
     float m_aaGage;
-    float m_maxAaGage = 200;
+    float m_maxAaGage = 100;
 
     //ガードゲージ用の変数
     float m_guardGage;
@@ -87,13 +91,13 @@ public class PlayerController : MonoBehaviour
 
     public bool _isRendered = true;
 
-    public enum AAGageState
-    {
-        None,
-        one,
-        two
-    }
-    public AAGageState m_aaGageState = AAGageState.None;
+    //public enum AAGageState
+    //{
+    //    None,
+    //    one,
+    //    two
+    //}
+    //public AAGageState m_aaGageState = AAGageState.None;
 
     // Start is called before the first frame update
     void Start()
@@ -111,6 +115,7 @@ public class PlayerController : MonoBehaviour
         m_kachiboshi[1].enabled = false;
         m_kachiboshi[2].enabled = false;*/
         maxCount = 0;
+        DamageInterval = 0f;
         StepTime = false;
     }
 
@@ -129,15 +134,20 @@ public class PlayerController : MonoBehaviour
             StepIntervalTimer -= Time.deltaTime; 
         }
 
-        //アルティメットアタック用
-        if(m_aaGage >= 200)
+        if(DamageInterval > 0)
         {
-            m_aaGageState = AAGageState.two;
+            DamageInterval -= Time.deltaTime;
         }
-        else if(m_aaGage >= 100)
-        {
-            m_aaGageState = AAGageState.one;
-        }
+
+        ////アルティメットアタック用
+        //if(m_aaGage >= 200)
+        //{
+        //    m_aaGageState = AAGageState.two;
+        //}
+        //else if(m_aaGage >= 100)
+        //{
+        //    m_aaGageState = AAGageState.one;
+        //}
 
         //ガード用処理
         if (m_guardFlag == true)
@@ -233,15 +243,20 @@ public class PlayerController : MonoBehaviour
     {
         DuringAnimation = true;
         m_simpleAnimation.GetState(str).speed = x;
-        Debug.Log("攻撃アニメーション中だよ～" + " " + str);
+        //Debug.Log("攻撃アニメーション中だよ～" + " " + str);
         m_simpleAnimation.CrossFade(str, 0.1f);
     }
 
     public void AaAttack(string str)
     {
-        Debug.Log(str);
+        m_simpleAnimation.CrossFade("AaAttack", 0.3f);
+        GameObject AaEffects = Instantiate(AaAttackEffect,
+                                            WeponColider.transform.position,
+                                            Quaternion.identity);
+        SwordAaAttack m_swordAaAttack = AaEffects.GetComponent<SwordAaAttack>();
+        m_swordAaAttack.AaAttackDamage = m_katibosiController;
+        m_swordAaAttack.AaAttackCollider = m_collider;
         m_aaGage = 0;
-        m_aaGageState = AAGageState.None;
     }
 
     public float Horizontal
@@ -324,45 +339,53 @@ public class PlayerController : MonoBehaviour
     //ボックスコライダーに攻撃が当たった時の処理
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Sword" && m_guardFlag == false)
+        if (other.tag == "EnemySword" && m_guardFlag == false && StepTime == false && DamageInterval <= 0)
         {
-            Damage();
+            DamageInterval = 0.7f;
+            Damage(other);
         }
     }
 
     //攻撃が当たった時の処理
-    public void Damage()
+    public void Damage(Collider col)
     {
-        Debug.Log("Hit");
         switch (m_enemyAi.m_attackType)
         {
             case EnemyAI.AttackType.Attack1:
-                hit(zyakuAttack, zyakuDamage);
+                hit(zyakuAttack, zyakuDamage,col);
                 break;
             case EnemyAI.AttackType.Attack2:
-                hit(zyakuAttack, zyakuDamage);
+                hit(zyakuAttack, zyakuDamage,col);
                 break;
             case EnemyAI.AttackType.Attack3:
-                hit(zyakuAttack, zyakuDamage);
+                hit(zyakuAttack, zyakuDamage,col);
                 break;
             case EnemyAI.AttackType.StrongAttack:
-                hit(kyouAttack, kyouDamage);
+                hit(kyouAttack, kyouDamage,col);
                 break;
             case EnemyAI.AttackType.KnockBackAttack:
-                hit(kyouAttack, kyouDamage);
+                hit(kyouAttack, kyouDamage,col);
                 break;
         }
     }
 
-    void hit(float Attack, float Damage)
+    void hit(float Attack, float Damage, Collider col)
     {
         DuringAnimation = true;
-        GameObject Effect = Instantiate(HitEffect);
+        GameObject Effect = Instantiate(HitEffect,col.transform.position , Quaternion.identity);
         Destroy(Effect, 1f);
         m_simpleAnimation.CrossFade("Hit", 0.3f);
         m_katibosiController.KatibosiGage(Attack);
         KatibosiGage(Damage);
     }
+
+    public float GetAaGage
+    {
+        get
+        {
+            return m_aaGage;
+        }
+    } 
 
     //コライダー用のアニメーションイベント
     //---------------------------------------------
