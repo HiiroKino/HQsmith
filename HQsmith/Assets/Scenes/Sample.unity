@@ -187,7 +187,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1742474343464944, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_Name
-      value: Eff2_LightingSpins
+      value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 4260607537457244, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_LocalPosition.x
@@ -207,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260607537457244, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6427876
+      value: -0.6427875
       objectReference: {fileID: 0}
     - target: {fileID: 4260607537457244, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_LocalRotation.z
@@ -215,7 +215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4260607537457244, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7660445
+      value: 0.76604444
       objectReference: {fileID: 0}
     - target: {fileID: 4260607537457244, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_RootOrder
@@ -235,7 +235,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1082122924136592, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
       propertyPath: m_TagString
-      value: Sword
+      value: EnemySword
+      objectReference: {fileID: 0}
+    - target: {fileID: 95061519508189348, guid: cdf1943e01b60ca4884ce16a8d9c4992,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdf1943e01b60ca4884ce16a8d9c4992, type: 3}
@@ -479,6 +484,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1500378020736912, guid: 2547a66872ebe45408ace228820a79e1,
         type: 3}
+    - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: AaAttackEffect
+      value: 
+      objectReference: {fileID: 1231613479036739334, guid: 9099ca528f483da42b3c48dfca82b337,
+        type: 3}
+    - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: m_collider
+      value: 
+      objectReference: {fileID: 1892082532}
     - target: {fileID: 978150993, guid: 3594dd119fd3551488de061aecb72680, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -514,6 +528,10 @@ PrefabInstance:
     - target: {fileID: 978150990, guid: 3594dd119fd3551488de061aecb72680, type: 3}
       propertyPath: m_States.Array.data[11].name
       value: LeftStep
+      objectReference: {fileID: 0}
+    - target: {fileID: 978150990, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: m_States.Array.data[6].name
+      value: AaAttack
       objectReference: {fileID: 0}
     - target: {fileID: 978150989, guid: 3594dd119fd3551488de061aecb72680, type: 3}
       propertyPath: m_TagString
@@ -904,13 +922,22 @@ MonoBehaviour:
     name: StrongAttack
     defaultState: 0
   - clip: {fileID: 7400000, guid: dbbdcfdc751ca1146932bd6bc3dda730, type: 3}
-    name: Provoke
+    name: AaAttack
     defaultState: 0
   - clip: {fileID: 7400000, guid: 4b0531ee27097e947b1e0661641ea33f, type: 2}
     name: KnockBackAttack
     defaultState: 0
-  - clip: {fileID: 7400000, guid: dbbdcfdc751ca1146932bd6bc3dda730, type: 3}
+  - clip: {fileID: 7400000, guid: a85ff6df795adc34e9f7eba828ce836b, type: 2}
     name: Guard
+    defaultState: 0
+  - clip: {fileID: 7400000, guid: f8cbd01bd5b649048bf365e4ece13d69, type: 3}
+    name: Hit
+    defaultState: 0
+  - clip: {fileID: 7400000, guid: 9427e65a1ad93d94a8071ac43808e1c5, type: 3}
+    name: RightStep
+    defaultState: 0
+  - clip: {fileID: 7400000, guid: f58224593ab6ad849b37d203364c1ce4, type: 3}
+    name: LeftStep
     defaultState: 0
 --- !u!195 &1892082529
 NavMeshAgent:
@@ -922,7 +949,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 10
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -931,7 +958,7 @@ NavMeshAgent:
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1892082530
@@ -961,6 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attackType: 0
+  gameManager: {fileID: 0}
   m_actionType: 5
   WeponColider: {fileID: 1409907708}
   m_target: {fileID: 1232739022}
@@ -993,6 +1021,19 @@ MonoBehaviour:
   m_enemyPlayerController: {fileID: 1232739023}
   UIobj: {fileID: 1556516429}
   m_kachiboshi: []
+--- !u!114 &1892082536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1892082527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8922aeebab72eb41bb43d10829ab2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_lockOn: {fileID: 1333760927}
 --- !u!1 &2106544299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,6 +1155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_attackType: 0
+  gameManager: {fileID: 0}
   m_actionType: 5
   WeponColider: {fileID: 0}
   m_target: {fileID: 1232739022}

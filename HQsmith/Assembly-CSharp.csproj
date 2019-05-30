@@ -114,6 +114,7 @@
     <Compile Include="Assets\Scripts\Games\UserController.cs" />
     <Compile Include="Assets\Scripts\MoveController.cs" />
     <Compile Include="Assets\Scripts\OutputMenus.cs" />
+    <Compile Include="Assets\Scripts\SwordAaAttack.cs" />
     <Compile Include="Assets\Scripts\TimeLimit.cs" />
     <Compile Include="Assets\Scripts\TitleController.cs" />
     <Compile Include="Assets\Scripts\UIScript.cs" />

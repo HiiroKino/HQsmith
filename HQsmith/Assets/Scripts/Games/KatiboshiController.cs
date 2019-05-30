@@ -36,21 +36,31 @@ public class KatiboshiController : MonoBehaviour
     //弱攻撃ダメージ用の変数
     float kyouDamage;
 
+    EnemyAI m_enemyAI;
+
+    float DamageInterval;
+
     // Start is called before the first frame update
     void Start()
     {
         m_guardFlag = false;
+        m_enemyAI = GetComponent<EnemyAI>();
+        DamageInterval = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(DamageInterval > 0)
+        {
+            DamageInterval -= Time.deltaTime;
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Sword" && m_guardFlag == false)
+        if (other.tag == "Sword" && m_guardFlag == false && DamageInterval <= 0)
         {
+            DamageInterval = 0.7f;
             Damage();
         }
     }
@@ -63,22 +73,27 @@ public class KatiboshiController : MonoBehaviour
             case UserController.AttackType.Attack1:
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                m_enemyAI.Hit();
                 break;
             case UserController.AttackType.Attack2:
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                m_enemyAI.Hit();
                 break;
             case UserController.AttackType.Attack3:
                 m_enemyPlayerController.KatibosiGage(zyakuAttack);
                 KatibosiGage(zyakuDamage);
+                m_enemyAI.Hit();
                 break;
             case UserController.AttackType.StrongAttack:
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
+                m_enemyAI.Hit();
                 break;
             case UserController.AttackType.KnockBackAttack:
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
+                m_enemyAI.Hit();
                 break;
         }
     }

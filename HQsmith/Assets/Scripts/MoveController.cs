@@ -23,7 +23,7 @@ public class MoveController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_enemyAi.TransFormEnemy = transform.forward;
+        
     }
 
     public void Move(float value)

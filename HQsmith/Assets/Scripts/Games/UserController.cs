@@ -28,9 +28,9 @@ public class UserController : MonoBehaviour
 
     public KeyCode m_attack1Key = KeyCode.Joystick1Button1;    //弱攻撃ボタン
     public KeyCode m_attack2Key = KeyCode.Joystick1Button2;    //強攻撃ボタン
-    public KeyCode m_provokeKey = KeyCode.Joystick1Button0;
+    public KeyCode m_aaAttackKey = KeyCode.Joystick1Button0;
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
-    public KeyCode m_AaAttackKey = KeyCode.A;
+    //public KeyCode m_AaAttackKey = KeyCode.A;
 
     public string m_DashKey = "DashKey";   
 
@@ -42,7 +42,6 @@ public class UserController : MonoBehaviour
         Attack3,
         StrongAttack,
         KnockBackAttack,
-        provoke,
         notAttack,
     }
     public AttackType m_attackType = AttackType.notAttack;
@@ -111,17 +110,20 @@ public class UserController : MonoBehaviour
             Attack();
         }
         //挑発ぼたん処理
-        if (Input.GetKeyDown(m_provokeKey))
-        {
-            DuringAnimation = true;
-            m_attackType = AttackType.provoke;
-            Attack();
-        }   
+        //if (Input.GetKeyDown(m_provokeKey))
+        //{
+        //    DuringAnimation = true;
+        //    m_attackType = AttackType.provoke;
+        //    Attack();
+        //}   
 
         //AAアタックのボタン処理
-        if (Input.GetKeyDown(m_AaAttackKey) && m_playerController.m_aaGageState == PlayerController.AAGageState.None)
+        if (Input.GetKeyDown(m_aaAttackKey))
         {
-            AaAttack();
+            if (m_playerController.GetAaGage >= 100f)
+            {
+                m_playerController.AaAttack("AaAttack");
+            }
         }
     }
 
@@ -165,38 +167,18 @@ public class UserController : MonoBehaviour
             }
             else if (m_attackType == AttackType.Attack3)
             {
-                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("Attack3");
             }
             else if (m_attackType == AttackType.StrongAttack)
             {
-                m_attackType = AttackType.notAttack;
                 m_playerController.PlayAnimation("StrongAttack");
-            }
-            else if (m_attackType == AttackType.provoke)
-            {
-                m_attackType = AttackType.notAttack;
-                m_playerController.PlayAnimation("Provoke");
             }
         }
         if (m_attackType == AttackType.KnockBackAttack)
         {
-            m_attackType = AttackType.notAttack;
             m_playerController.PlayAnimation("KnockbackAttack");
         }
     }   
-
-    public void AaAttack()
-    {
-        if (m_playerController.m_aaGageState == PlayerController.AAGageState.one)
-        {
-            m_playerController.AaAttack("one");
-        }
-        else if (m_playerController.m_aaGageState == PlayerController.AAGageState.two)
-        {
-            m_playerController.AaAttack("two");
-        }
-    }
 
     //ガード処理
     public void GuardFlag()
@@ -229,6 +211,10 @@ public class UserController : MonoBehaviour
 
     void OnAnimationFinished()
     {
+        if(m_attackType == AttackType.StrongAttack || m_attackType == AttackType.Attack3 || m_attackType == AttackType.KnockBackAttack)
+        {
+            m_attackType = AttackType.notAttack;
+        }
         DuringAnimation = false;
         m_attackTimer = 2f;
         m_attackIntervalTimer = 0.2f;
