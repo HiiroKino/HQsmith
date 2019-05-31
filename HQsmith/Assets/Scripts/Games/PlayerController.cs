@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour
             DamageInterval -= Time.deltaTime;
         }
 
-        //UIobj.fillAmount += Time.deltaTime * 0.1f;
+        UIobj.fillAmount += Time.deltaTime * 0.1f;
 
         //カチボシゲージがマックスになったらリセットしてカチボシを１つ増やす
         if (UIobj.fillAmount >= 1)
@@ -183,13 +183,14 @@ public class PlayerController : MonoBehaviour
             }
 
 
-            //カチボシを３つ獲得したらリザルト画面へ
-            if (maxCount == 2)
-            {
-
-            }
         }
 
+        //カチボシを３つ獲得したらリザルト画面へ
+        if (m_kachiboshiAnimator.Length >= 2)
+        {
+            GameManager.Player = true;
+            SceneManager.LoadScene("Result");
+        }
 
         //ガードゲージ自動増加処理
         if (m_guardGage.fillAmount < 1f)
@@ -389,12 +390,6 @@ public class PlayerController : MonoBehaviour
         {
             katibosiCount--;
             UIobj.fillAmount = 1f - UIobj.fillAmount;
-        }
-
-        if(maxCount == 3)
-        {
-            gameManager.Player = true;
-            SceneManager.LoadScene("Result");
         }
     }
 
