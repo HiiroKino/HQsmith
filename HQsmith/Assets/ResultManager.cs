@@ -50,7 +50,7 @@ public class ResultManager : MonoBehaviour
 
         Debug.Log(x);
 
-        if (!isWait && isActive)
+        if (!isWait)
         {
             if (x > 0)
             {
@@ -123,7 +123,7 @@ public class ResultManager : MonoBehaviour
                 SceneManager.LoadScene("Sample_kino");  //PlayScene
                 break;
             case 1:
-                SceneManager.LoadScene("Title");
+                SceneManager.LoadScene("TitleScene");
                 break;
             default:
                 break;
