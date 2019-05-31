@@ -40,12 +40,15 @@ public class KatiboshiController : MonoBehaviour
 
     float DamageInterval;
 
+    Rigidbody m_rigidBody;
+
     // Start is called before the first frame update
     void Start()
     {
         m_guardFlag = false;
         m_enemyAI = GetComponent<EnemyAI>();
         DamageInterval = 0f;
+        m_rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -91,6 +94,7 @@ public class KatiboshiController : MonoBehaviour
                 m_enemyAI.Hit();
                 break;
             case UserController.AttackType.KnockBackAttack:
+                m_rigidBody.AddForce(Vector3.forward * (-10f), ForceMode.VelocityChange);
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
                 m_enemyAI.Hit();

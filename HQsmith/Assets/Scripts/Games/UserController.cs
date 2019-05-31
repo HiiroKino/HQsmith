@@ -29,6 +29,7 @@ public class UserController : MonoBehaviour
     public KeyCode m_attack1Key = KeyCode.Joystick1Button1;    //弱攻撃ボタン
     public KeyCode m_attack2Key = KeyCode.Joystick1Button2;    //強攻撃ボタン
     public KeyCode m_aaAttackKey = KeyCode.Joystick1Button0;
+    public KeyCode m_knockBackAttack = KeyCode.Joystick1Button3;
     public KeyCode m_GuardKey = KeyCode.Joystick1Button5;
     //public KeyCode m_AaAttackKey = KeyCode.A;
 
@@ -109,6 +110,12 @@ public class UserController : MonoBehaviour
             }
             Attack();
         }
+        //if (Input.GetKeyDown(m_knockBackAttack))
+        //{
+        //    DuringAnimation = true;
+        //    m_attackType = AttackType.KnockBackAttack;
+        //    Attack();
+        //}
         //挑発ぼたん処理
         //if (Input.GetKeyDown(m_provokeKey))
         //{

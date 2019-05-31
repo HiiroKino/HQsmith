@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     BoxCollider WeponColider;
 
+    Rigidbody m_rigidbody;
+
     bool StepTime;
     //アニメーション中じゃないか判断
     bool DuringAnimation;
@@ -102,6 +104,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        m_aaGage = 100f;
         DuringAnimation = false;
         WeponColider.enabled = false;
         ComboCount = 0;
@@ -110,6 +113,7 @@ public class PlayerController : MonoBehaviour
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_userController = GetComponent<UserController>();
         gameManager = GetComponent<GameManager>();
+        m_rigidbody = GetComponent<Rigidbody>();
         /*UIobj.fillAmount = 0f;
         m_kachiboshi[0].enabled = false;
         m_kachiboshi[1].enabled = false;
@@ -247,13 +251,16 @@ public class PlayerController : MonoBehaviour
         m_simpleAnimation.CrossFade(str, 0.1f);
     }
 
-    public void AaAttack(string str)
+    public void AaAttack(string str, float x = 1.6f)
     {
-        m_simpleAnimation.CrossFade("AaAttack", 0.3f);
+        DuringAnimation = true;
+        m_simpleAnimation.GetState(str).speed = x;
+        m_simpleAnimation.CrossFade(str, 0.3f);
         GameObject AaEffects = Instantiate(AaAttackEffect,
                                             WeponColider.transform.position,
                                             Quaternion.identity);
-        SwordAaAttack m_swordAaAttack = AaEffects.GetComponent<SwordAaAttack>();
+        GameObject obj = AaEffects.transform.Find("Slash").gameObject;
+        SwordAaAttack m_swordAaAttack = obj.GetComponent<SwordAaAttack>();
         m_swordAaAttack.AaAttackDamage = m_katibosiController;
         m_swordAaAttack.AaAttackCollider = m_collider;
         m_aaGage = 0;
@@ -364,6 +371,7 @@ public class PlayerController : MonoBehaviour
                 hit(kyouAttack, kyouDamage,col);
                 break;
             case EnemyAI.AttackType.KnockBackAttack:
+                m_rigidbody.AddForce(Vector3.forward * (-10f), ForceMode.VelocityChange);
                 hit(kyouAttack, kyouDamage,col);
                 break;
         }
