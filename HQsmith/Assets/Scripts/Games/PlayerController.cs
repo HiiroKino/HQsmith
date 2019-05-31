@@ -186,11 +186,11 @@ public class PlayerController : MonoBehaviour
         }
 
         //カチボシを３つ獲得したらリザルト画面へ
-        if (m_kachiboshiAnimator.Length >= 2)
+        /*if (m_kachiboshiAnimator.Length >= 2)
         {
-            GameManager.Player = true;
+            gameManager.Player = true;
             SceneManager.LoadScene("Result");
-        }
+        }*/
 
         //ガードゲージ自動増加処理
         if (m_guardGage.fillAmount < 1f)
@@ -380,7 +380,6 @@ public class PlayerController : MonoBehaviour
     //評価ゲージのダメージ、増加処理
     public void KatibosiGage(float damege)
     {
-        damege *= (1 + ComboCount / 10);
         UIobj.fillAmount += damege;
         if (UIobj.fillAmount > 1f)
         {
@@ -413,8 +412,7 @@ public class PlayerController : MonoBehaviour
     //AAゲージ増加処理
     public void AAgaugeMethod(float AAdamage)
     {
-        AAdamage = autoAAgauge;
-        aaGauge_1.fillAmount = AAdamage;
+        aaGauge_1.fillAmount += AAdamage;
         if (aaGauge_1.fillAmount < 0f)
         {
             aaGauge_1.fillAmount = 1f - aaGauge_1.fillAmount;

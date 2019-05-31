@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    [SerializeField]
+    EnemyUI enemyUI;
+
     public enum ActionType
     {
         Attack,       //攻撃

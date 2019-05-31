@@ -98,6 +98,7 @@
     <Compile Include="Assets\ResultManager.cs" />
     <Compile Include="Assets\Scripts\CursorController.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
+    <Compile Include="Assets\Scripts\EnemyUI.cs" />
     <Compile Include="Assets\Scripts\FadeCommand.cs" />
     <Compile Include="Assets\Scripts\Fadein.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
