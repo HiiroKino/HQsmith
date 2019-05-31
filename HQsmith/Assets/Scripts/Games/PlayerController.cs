@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     GameObject HitEffect;
     [SerializeField]
     GameObject AaAttackEffect;
+    [SerializeField]
+    GameObject Gamecontroller;
 
     [SerializeField]
     KatiboshiController m_katibosiController;
@@ -128,7 +130,7 @@ public class PlayerController : MonoBehaviour
         //StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_userController = GetComponent<UserController>();
-        gameController = GetComponent<GameController>();
+        gameController = Gamecontroller.GetComponent<GameController>();
         UIobj.fillAmount = 0f;
         aaGauge_1.fillAmount = 0f;
         /*m_kachiboshi[0].enabled = false;
@@ -186,7 +188,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //カチボシを３つ獲得したらリザルト画面へ
-        if (m_kachiboshiAnimator.Length >= 2)
+        if (/*m_kachiboshiAnimator.Length >= 2*/maxCount == 3)
         {
             gameController.Player = true;
             SceneManager.LoadScene("Result");

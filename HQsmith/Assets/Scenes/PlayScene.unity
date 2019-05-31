@@ -1175,6 +1175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitEffect: {fileID: 0}
   AaAttackEffect: {fileID: 0}
+  Gamecontroller: {fileID: 0}
   m_katibosiController: {fileID: 0}
   m_collider: {fileID: 0}
   gameController: {fileID: 0}
@@ -1400,6 +1401,14 @@ PrefabInstance:
       propertyPath: autoAAgauge
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: gameController
+      value: 
+      objectReference: {fileID: 245511777}
+    - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
+      propertyPath: Gamecontroller
+      value: 
+      objectReference: {fileID: 245511775}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3594dd119fd3551488de061aecb72680, type: 3}
 --- !u!1 &978150988 stripped
@@ -1551,6 +1560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HitEffect: {fileID: 0}
   AaAttackEffect: {fileID: 0}
+  Gamecontroller: {fileID: 0}
   m_katibosiController: {fileID: 0}
   m_collider: {fileID: 0}
   gameController: {fileID: 0}
