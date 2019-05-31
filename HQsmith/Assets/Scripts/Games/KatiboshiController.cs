@@ -61,8 +61,10 @@ public class KatiboshiController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Collider");
         if (other.tag == "Sword" && m_guardFlag == false && DamageInterval <= 0)
         {
+            Debug.Log("Damage");
             DamageInterval = 0.7f;
             Damage();
         }
@@ -71,6 +73,7 @@ public class KatiboshiController : MonoBehaviour
     //攻撃が当たった時の処理
     public void Damage()
     {
+        Debug.Log(m_enemyUserController.m_attackType);
         switch (m_enemyUserController.m_attackType)
         {
             case UserController.AttackType.Attack1:
@@ -94,7 +97,7 @@ public class KatiboshiController : MonoBehaviour
                 m_enemyAI.Hit();
                 break;
             case UserController.AttackType.KnockBackAttack:
-                m_rigidBody.AddForce(Vector3.forward * (-10f), ForceMode.VelocityChange);
+                StartCoroutine("KnockBack");
                 m_enemyPlayerController.KatibosiGage(kyouAttack);
                 KatibosiGage(kyouDamage);
                 m_enemyAI.Hit();
@@ -117,6 +120,18 @@ public class KatiboshiController : MonoBehaviour
             katibosiCount--;
             UIobj.fillAmount = 1f - UIobj.fillAmount;
         }
+    }
+
+    IEnumerator KnockBack()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            transform.position += transform.forward * -3 * Time.deltaTime;
+            Debug.Log("KnockBack");
+            yield return null;
+        }
+        yield break;
+
     }
 
     public bool GuardFlag

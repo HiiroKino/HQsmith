@@ -110,19 +110,6 @@ public class UserController : MonoBehaviour
             }
             Attack();
         }
-        //if (Input.GetKeyDown(m_knockBackAttack))
-        //{
-        //    DuringAnimation = true;
-        //    m_attackType = AttackType.KnockBackAttack;
-        //    Attack();
-        //}
-        //挑発ぼたん処理
-        //if (Input.GetKeyDown(m_provokeKey))
-        //{
-        //    DuringAnimation = true;
-        //    m_attackType = AttackType.provoke;
-        //    Attack();
-        //}   
 
         //AAアタックのボタン処理
         if (Input.GetKeyDown(m_aaAttackKey))
@@ -141,11 +128,13 @@ public class UserController : MonoBehaviour
         if (m_attackTimer > 0)
         {
             m_attackTimer -= Time.deltaTime;
+            if (m_attackTimer <= 0)
+            {
+                Debug.Log("notAttack A");
+                m_attackType = AttackType.notAttack;
+            }
         }
-        else if (m_attackTimer <= 0)
-        {
-            m_attackType = AttackType.notAttack;
-        }
+        
 
         //攻撃用のインターバルタイマー
         if (m_attackIntervalTimer > 0)
@@ -220,6 +209,7 @@ public class UserController : MonoBehaviour
     {
         if(m_attackType == AttackType.StrongAttack || m_attackType == AttackType.Attack3 || m_attackType == AttackType.KnockBackAttack)
         {
+            //Debug.Log("notAttack B");
             m_attackType = AttackType.notAttack;
         }
         DuringAnimation = false;

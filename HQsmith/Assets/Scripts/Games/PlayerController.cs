@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     GameObject HitEffect;
     [SerializeField]
     GameObject AaAttackEffect;
+    [SerializeField]
+    GameObject EffectSpawnPosition;
 
     [SerializeField]
     KatiboshiController m_katibosiController;
@@ -34,6 +36,9 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     EnemyAI m_enemyAi;
+
+    [SerializeField]
+    Transform m_AaAttackTarget;
 
     UserController m_userController;
 
@@ -123,6 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         DuringAnimation = false;
         WeponColider.enabled = false;
+        m_aaGage = 0f;
         ComboCount = 0;
         katibosiCount = 0;
         //StartCoroutine("AaGage");
@@ -318,13 +324,16 @@ public class PlayerController : MonoBehaviour
         m_simpleAnimation.CrossFade(str, 0.1f);
     }
 
-    public void AaAttack(string str)
+    public void AaAttack(string str , float x = 1.5f)
     {
-        m_simpleAnimation.CrossFade("AaAttack", 0.3f);
+        DuringAnimation = true;
+        m_simpleAnimation.GetState(str).speed = x;
+        m_simpleAnimation.CrossFade(str, 0.3f);
         GameObject AaEffects = Instantiate(AaAttackEffect,
-                                            WeponColider.transform.position,
+                                            EffectSpawnPosition.transform.position,
                                             Quaternion.identity);
-        SwordAaAttack m_swordAaAttack = AaEffects.GetComponent<SwordAaAttack>();
+        GameObject obj = AaEffects.transform.FindChild("Slash").gameObject;
+        SwordAaAttack m_swordAaAttack = obj.GetComponent<SwordAaAttack>();
         m_swordAaAttack.AaAttackDamage = m_katibosiController;
         m_swordAaAttack.AaAttackCollider = m_collider;
         m_aaGage = 0;
@@ -447,6 +456,7 @@ public class PlayerController : MonoBehaviour
                 AAgaugeMethod(kyouDamage);
                 break;
             case EnemyAI.AttackType.KnockBackAttack:
+                StartCoroutine("KnockBack");
                 hit(kyouAttack, kyouDamage,col);
                 KatibosiGage(kyouDamage);
                 AAgaugeMethod(kyouDamage);
@@ -470,8 +480,17 @@ public class PlayerController : MonoBehaviour
         {
             return m_aaGage;
         }
-    } 
+    }
 
+    IEnumerator KnockBack()
+    {
+        for (int i = 0; i < 30; i++)
+        {
+            transform.position += transform.forward * -1 * Time.deltaTime;
+            yield return null;
+        }
+        yield break;
+    }
     //コライダー用のアニメーションイベント
     //---------------------------------------------
     void StartAttack()

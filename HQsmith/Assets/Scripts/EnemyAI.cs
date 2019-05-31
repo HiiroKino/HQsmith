@@ -81,7 +81,6 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (m_actionType == ActionType.Guard)
         {
             m_katibosiController.GuardFlag = true;
@@ -90,14 +89,14 @@ public class EnemyAI : MonoBehaviour
         {
             m_katibosiController.GuardFlag = false;
         }
-        if(!DuringAnimation && m_attackIntervalTimer > 0)
+        //if(!DuringAnimation && m_attackIntervalTimer > 0)
+        //{
+        //    //Debug.Log("アイドル状態だよー");
+        //    m_simpleAnimation.Play("Idle");
+        //}
+        if (!DuringAnimation)
         {
-            Debug.Log("アイドル状態だよー");
-            m_simpleAnimation.Play("Idle");
-        }
-        else if (!DuringAnimation)
-        {
-            Debug.Log("走ってるよ～");
+            //Debug.Log("走ってるよ～");
             m_simpleAnimation.Play("Run");
         }
 
@@ -167,7 +166,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (!DuringAnimation && m_attackIntervalTimer <= 0)
         {
-            Debug.Log("EnemyAttack!!!");
+            //Debug.Log("EnemyAttack!!!");
             actionIntervalTimer = 1.0f;
             ChangeActionType(ActionType.GetClose);
             m_moveController.DuringAnimation = true;
@@ -177,20 +176,20 @@ public class EnemyAI : MonoBehaviour
                 case 0:
                     if (m_attackType == AttackType.Attack1)
                     {
-                        Debug.Log("攻撃１だよ～");
+                        //Debug.Log("攻撃１だよ～");
                         m_simpleAnimation.CrossFade("Attack1", 0.3f);
                         m_attackType = AttackType.Attack2;
 
                     }
                     else if (m_attackType == AttackType.Attack2)
                     {
-                        Debug.Log("攻撃2だよ～");
+                        //Debug.Log("攻撃2だよ～");
                         m_simpleAnimation.CrossFade("Attack2", 0.3f);
                         m_attackType = AttackType.Attack3;
                     }
                     else if (m_attackType == AttackType.Attack3)
                     {
-                        Debug.Log("攻撃３だよ～");
+                        //Debug.Log("攻撃３だよ～");
                         m_simpleAnimation.CrossFade("Attack3", 0.3f);
                         m_attackType = AttackType.Attack1;
                     }
@@ -216,20 +215,20 @@ public class EnemyAI : MonoBehaviour
     {
         if (StepIntervalTimer <= 0 && !DuringAnimation )
         {
-            Debug.Log("Escape!!!");
+            //Debug.Log("Escape!!!");
             actionIntervalTimer = 1.0f;
             StepIntervalTimer = 0.7f;
             switch (m_choosePos = Random.Range(0, 2))
             {
                 case 0:
                     DuringAnimation = true;
-                    Debug.Log("右ステップだよー");
-                    m_simpleAnimation.CrossFade("RightStep", 0.1f);
+                    //Debug.Log("右ステップだよー");
+                    m_simpleAnimation.Play("RightStep");
                     break;
                 case 1:
                     DuringAnimation = true;
-                    Debug.Log("左ステップだよー");
-                    m_simpleAnimation.CrossFade("LeftStep",0.1f);
+                    //Debug.Log("左ステップだよー");
+                    m_simpleAnimation.Play("LeftStep");
                     break;
                 default:
                     break;
@@ -241,7 +240,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (!DuringAnimation)
         {
-            Debug.Log("ガードだよー");
+            //Debug.Log("ガードだよー");
             m_simpleAnimation.CrossFade("Guard", 0.1f);
             actionIntervalTimer = 1.0f;
             m_navMeshAgent.SetDestination(this.transform.position);
@@ -254,14 +253,14 @@ public class EnemyAI : MonoBehaviour
     }
     void TakeABreak()
     {
-        Debug.Log("Take A Break!!!");
+        //Debug.Log("Take A Break!!!");
         actionIntervalTimer = 1.0f;
         m_position.position += new Vector3(0, 0, 10);
         ChangeActionType(ActionType.GetClose);
     }
     void GetClose()
     {
-        m_navMeshAgent.isStopped = false;
+        //m_navMeshAgent.isStopped = false;
 
 
         //Navmeshの経路探索準備が出来ているなら
@@ -303,6 +302,7 @@ public class EnemyAI : MonoBehaviour
         m_actionType = type;
         switch(m_actionType){
                 case ActionType.Attack:
+                Debug.Log("isStopped true");
                 m_navMeshAgent.isStopped = true;
                 break;
                 case ActionType.Escape:
@@ -330,6 +330,7 @@ public class EnemyAI : MonoBehaviour
     }
     void OnAnimationFinished()
     {
+        m_navMeshAgent.isStopped = false;
         DuringAnimation = false;
         m_comboTimer = 2f;
         m_actionType = ActionType.GetClose;
@@ -342,7 +343,7 @@ public class EnemyAI : MonoBehaviour
     {
         WeponColider.enabled = false;
         DuringAnimation = true;
-        Debug.Log("ヒット中だよ～");
+        
         m_simpleAnimation.Play("Hit");
         
     }
@@ -354,7 +355,7 @@ public class EnemyAI : MonoBehaviour
 
     void StepEnd()
     {
-        
+        DuringAnimation = false;
     }
     
     void InstantiateEffect()
