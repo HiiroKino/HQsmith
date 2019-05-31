@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     Collider m_collider;
 
     [SerializeField]
-    GameManager gameManager;
+    GameController gameController;
 
     [SerializeField]
     EnemyAI m_enemyAi;
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         //StartCoroutine("AaGage");
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_userController = GetComponent<UserController>();
-        gameManager = GetComponent<GameManager>();
+        gameController = GetComponent<GameController>();
         UIobj.fillAmount = 0f;
         aaGauge_1.fillAmount = 0f;
         /*m_kachiboshi[0].enabled = false;
@@ -188,7 +188,7 @@ public class PlayerController : MonoBehaviour
         //カチボシを３つ獲得したらリザルト画面へ
         if (m_kachiboshiAnimator.Length >= 2)
         {
-            GameManager.Player = true;
+            gameController.Player = true;
             SceneManager.LoadScene("Result");
         }
 

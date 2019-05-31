@@ -30,7 +30,7 @@ public class EnemyAI : MonoBehaviour
 
 
     [SerializeField]
-    GameManager gameManager;
+    GameController gameController;
 
 
     Vector3 vec;

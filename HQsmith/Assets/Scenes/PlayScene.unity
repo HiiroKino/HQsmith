@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1157,6 +1157,7 @@ MonoBehaviour:
   m_attack1Key: 351
   m_attack2Key: 352
   m_aaAttackKey: 350
+  m_knockBackAttack: 353
   m_GuardKey: 355
   m_DashKey: DashKey
   m_attackType: 0
@@ -1176,7 +1177,7 @@ MonoBehaviour:
   AaAttackEffect: {fileID: 0}
   m_katibosiController: {fileID: 0}
   m_collider: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameController: {fileID: 0}
   m_enemyAi: {fileID: 0}
   WeponColider: {fileID: 1863611957}
   aaGauge_1: {fileID: 0}
@@ -1374,7 +1375,7 @@ PrefabInstance:
     - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
       propertyPath: gameManager
       value: 
-      objectReference: {fileID: 245511777}
+      objectReference: {fileID: 0}
     - target: {fileID: 978150991, guid: 3594dd119fd3551488de061aecb72680, type: 3}
       propertyPath: aaGauge_1
       value: 
@@ -1532,6 +1533,7 @@ MonoBehaviour:
   m_attack1Key: 351
   m_attack2Key: 352
   m_aaAttackKey: 350
+  m_knockBackAttack: 353
   m_GuardKey: 355
   m_DashKey: DashKey
   m_attackType: 0
@@ -1551,7 +1553,7 @@ MonoBehaviour:
   AaAttackEffect: {fileID: 0}
   m_katibosiController: {fileID: 0}
   m_collider: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameController: {fileID: 0}
   m_enemyAi: {fileID: 0}
   WeponColider: {fileID: 0}
   aaGauge_1: {fileID: 0}
